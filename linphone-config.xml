@@ -1,48 +1,76 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://www.linphone.org/xsds/lpconfig.xsd">
+<config xmlns="http://www.linphone.org/xsds/lpconfig.xsd"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.linphone.org/xsds/lpconfig.xsd lpconfig.xsd">
+
+  <!-- SIP General Settings -->
   <section name="sip">
-    <entry name="default_proxy">0</entry>
-    <entry name="media_encryption_mandatory">2</entry>
-    <entry name="transport">tls</entry>
+    <entry name="default_proxy" overwrite="true">0</entry>
   </section>
-  <section name="proxy_0">
-    <entry name="reg_identity">sip:447457402871@voiceless.aa.net.uk</entry>
-    <entry name="reg_proxy">sip:voiceless.aa.net.uk;transport=tls</entry>
-    <entry name="reg_expires">3600</entry>
-    <entry name="reg_sendregister">1</entry>
-    <entry name="reg_user">447457402871</entry>
-    <entry name="reg_passwd">PristineFigmentObnoxiousScribe</entry>
-    <entry name="publish">1</entry>
-    <entry name="avpf">1</entry>
-    <entry name="media_encryption">srtp</entry>
+
+  <!-- Authentication Info for SIP -->
+  <section name="auth_info_0" overwrite="true">
+    <entry name="username" overwrite="true">447457402871</entry>
+    <entry name="userid" overwrite="true">447457402871</entry>
+    <entry name="passwd" overwrite="true">PristineFigmentObnoxiousScribe</entry>
+    <entry name="realm" overwrite="true">voiceless.aa.net.uk</entry>
+    <entry name="domain" overwrite="true">voiceless.aa.net.uk</entry>
   </section>
-  <section name="net">
-    <entry name="nat_policy_ref">nat_policy_0</entry>
-    <entry name="firewall_policy">use_nat_address</entry>
+
+  <!-- SIP Proxy Configuration -->
+  <section name="proxy_0" overwrite="true">
+    <entry name="reg_identity" overwrite="true">sip:447457402871@voiceless.aa.net.uk</entry>
+    <entry name="reg_proxy" overwrite="true">sip:voiceless.aa.net.uk;transport=tls</entry>
+    <entry name="reg_route" overwrite="true">sip:voiceless.aa.net.uk;transport=tls</entry>
+    <entry name="realm" overwrite="true">voiceless.aa.net.uk</entry>
+    <entry name="reg_expires" overwrite="true">3600</entry>
+    <entry name="reg_sendregister" overwrite="true">1</entry>
+    <entry name="publish" overwrite="true">1</entry>
+    <entry name="avpf" overwrite="true">1</entry>
+    <entry name="avpf_rr_interval" overwrite="true">1</entry>
+    <entry name="media_encryption" overwrite="true">srtp</entry>
+    <entry name="nat_policy_ref" overwrite="true">AAISP_POLICY</entry>
   </section>
-  <section name="nat_policy_0">
-    <entry name="stun_server">stun:stun.linphone.org</entry>
-    <entry name="ice">1</entry>
-    <entry name="turn_enabled">0</entry>
+
+  <!-- NAT Policy -->
+  <section name="nat_policy_AAISP_POLICY" overwrite="true">
+    <entry name="ref" overwrite="true">AAISP_POLICY</entry>
+    <entry name="stun_server" overwrite="true">stun:stun.linphone.org</entry>
+    <entry name="protocols" overwrite="true">stun,ice</entry>
   </section>
-  <section name="sound">
-    <entry name="ec">1</entry>
-    <entry name="mic_gain_db">0</entry>
-    <entry name="playback_gain_db">0</entry>
+
+  <!-- Network Settings -->
+  <section name="net" overwrite="true">
+    <entry name="firewall_policy" overwrite="true">use_nat_address</entry>
   </section>
-  <section name="codecs_audio">
-    <entry name="opus/48000/2">1</entry>
-    <entry name="PCMU/8000/1">1</entry>
-    <entry name="PCMA/8000/1">1</entry>
-    <entry name="speex/16000/1">0</entry>
-    <entry name="G729/8000/1">0</entry>
+
+  <!-- Audio Settings -->
+  <section name="sound" overwrite="true">
+    <entry name="ec" overwrite="true">1</entry> <!-- Echo cancellation -->
+    <entry name="mic_gain_db" overwrite="true">0</entry>
+    <entry name="playback_gain_db" overwrite="true">0</entry>
   </section>
-  <section name="codecs_video">
-    <entry name="VP8/90000">1</entry>
-    <entry name="H264/90000">0</entry>
+
+  <!-- Audio Codecs -->
+  <section name="codecs_audio" overwrite="true">
+    <entry name="opus/48000/2">1</entry> <!-- Enable Opus -->
+    <entry name="PCMU/8000/1">1</entry> <!-- Enable PCMU -->
+    <entry name="PCMA/8000/1">1</entry> <!-- Enable PCMA -->
+    <entry name="speex/16000/1">0</entry> <!-- Disable Speex -->
+    <entry name="G729/8000/1">0</entry> <!-- Disable G729 -->
   </section>
-  <section name="misc">
-    <entry name="auto_answer">0</entry>
-    <entry name="log_level">3</entry>
+
+  <!-- Video Codecs -->
+  <section name="codecs_video" overwrite="true">
+    <entry name="VP8/90000">1</entry> <!-- Enable VP8 -->
+    <entry name="H264/90000">0</entry> <!-- Disable H264 -->
   </section>
+
+  <!-- Misc Settings -->
+  <section name="misc" overwrite="true">
+    <entry name="transient_provisioning" overwrite="true">1</entry>  <!-- Apply once -->
+    <entry name="auto_answer" overwrite="true">0</entry>             <!-- Auto-answer off -->
+    <entry name="log_level" overwrite="true">3</entry>               <!-- Logging level -->
+  </section>
+
 </config>

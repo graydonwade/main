@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<config xmlns="http://www.linphone.org/xsds/lpconfig.xsd">
+  <section name="sip">
+    <entry name="default_proxy">0</entry>
+    <entry name="media_encryption_mandatory">2</entry>
+    <entry name="transport">tls</entry>
+  </section>
+  <section name="proxy_0">
+    <entry name="reg_identity">sip:447457402871@voiceless.aa.net.uk</entry>
+    <entry name="reg_proxy">sip:voiceless.aa.net.uk;transport=tls</entry>
+    <entry name="reg_expires">3600</entry>
+    <entry name="reg_sendregister">1</entry>
+    <entry name="reg_user">447457402871</entry>
+    <entry name="reg_passwd">PristineFigmentObnoxiousScribe</entry>
+    <entry name="publish">1</entry>
+    <entry name="avpf">1</entry>
+    <entry name="media_encryption">srtp</entry>
+  </section>
+  <section name="net">
+    <entry name="nat_policy_ref">nat_policy_0</entry>
+    <entry name="firewall_policy">use_nat_address</entry>
+  </section>
+  <section name="nat_policy_0">
+    <entry name="stun_server">stun:stun.linphone.org</entry>
+    <entry name="ice">1</entry>
+    <entry name="turn_enabled">0</entry>
+  </section>
+  <section name="sound">
+    <entry name="ec">1</entry>
+    <entry name="mic_gain_db">0</entry>
+    <entry name="playback_gain_db">0</entry>
+  </section>
+  <section name="codecs_audio">
+    <entry name="opus/48000/2">1</entry>
+    <entry name="PCMU/8000/1">1</entry>
+    <entry name="PCMA/8000/1">1</entry>
+    <entry name="speex/16000/1">0</entry>
+    <entry name="G729/8000/1">0</entry>
+  </section>
+  <section name="codecs_video">
+    <entry name="VP8/90000">1</entry>
+    <entry name="H264/90000">0</entry>
+  </section>
+  <section name="misc">
+    <entry name="auto_answer">0</entry>
+    <entry name="log_level">3</entry>
+  </section>
+</config>

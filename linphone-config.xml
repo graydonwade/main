@@ -1,76 +1,70 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<config xmlns="http://www.linphone.org/xsds/lpconfig.xsd"
+onfig xmlns="http://www.linphone.org/xsds/lpconfig.xsd"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xsi:schemaLocation="http://www.linphone.org/xsds/lpconfig.xsd lpconfig.xsd">
+        xsi:schemaLocation="http://www.linphone.org/xsds/lpconfig.xsd lplpconfig.xsd">
 
-  <!-- SIP General Settings -->
   <section name="sip">
     <entry name="default_proxy" overwrite="true">0</entry>
   </section>
 
-  <!-- Authentication Info for SIP -->
   <section name="auth_info_0" overwrite="true">
     <entry name="username" overwrite="true">447457402871</entry>
     <entry name="userid" overwrite="true">447457402871</entry>
     <entry name="passwd" overwrite="true">PristineFigmentObnoxiousScribe</entry>
     <entry name="realm" overwrite="true">voiceless.aa.net.uk</entry>
     <entry name="domain" overwrite="true">voiceless.aa.net.uk</entry>
+    <entry name="algorithm" overwrite="true">MD5</entry>
   </section>
 
-  <!-- SIP Proxy Configuration -->
   <section name="proxy_0" overwrite="true">
     <entry name="reg_identity" overwrite="true">sip:447457402871@voiceless.aa.net.uk</entry>
     <entry name="reg_proxy" overwrite="true">sip:voiceless.aa.net.uk;transport=tls</entry>
     <entry name="reg_route" overwrite="true">sip:voiceless.aa.net.uk;transport=tls</entry>
     <entry name="realm" overwrite="true">voiceless.aa.net.uk</entry>
-    <entry name="reg_expires" overwrite="true">3600</entry>
+    <entry name="reg_expires" overwrite="true">600</entry>
     <entry name="reg_sendregister" overwrite="true">1</entry>
     <entry name="publish" overwrite="true">1</entry>
     <entry name="avpf" overwrite="true">1</entry>
-    <entry name="avpf_rr_interval" overwrite="true">1</entry>
+    <entry name="avpf_rr_interval" overwrite="true">5</entry>
     <entry name="media_encryption" overwrite="true">srtp</entry>
-    <entry name="nat_policy_ref" overwrite="true">AAISP_POLICY</entry>
+    <entry name="nat_policy_ref" overwrite="true">AAISP_NAT_POLICY</entry>
+    <entry name="support_path" overwrite="true">1</entry>
   </section>
 
-  <!-- NAT Policy -->
-  <section name="nat_policy_AAISP_POLICY" overwrite="true">
-    <entry name="ref" overwrite="true">AAISP_POLICY</entry>
+  <section name="nat_policy_AAISP_NAT_POLICY" overwrite="true">
+    <entry name="ref" overwrite="true">AAISP_NAT_POLICY</entry>
     <entry name="stun_server" overwrite="true">stun:stun.linphone.org</entry>
     <entry name="protocols" overwrite="true">stun,ice</entry>
+    <entry name="turn_enabled" overwrite="true">0</entry>
   </section>
 
-  <!-- Network Settings -->
   <section name="net" overwrite="true">
     <entry name="firewall_policy" overwrite="true">use_nat_address</entry>
   </section>
 
-  <!-- Audio Settings -->
   <section name="sound" overwrite="true">
-    <entry name="ec" overwrite="true">1</entry> <!-- Echo cancellation -->
+    <entry name="ec" overwrite="true">1</entry>
     <entry name="mic_gain_db" overwrite="true">0</entry>
     <entry name="playback_gain_db" overwrite="true">0</entry>
   </section>
 
-  <!-- Audio Codecs -->
   <section name="codecs_audio" overwrite="true">
-    <entry name="opus/48000/2">1</entry> <!-- Enable Opus -->
-    <entry name="PCMU/8000/1">1</entry> <!-- Enable PCMU -->
-    <entry name="PCMA/8000/1">1</entry> <!-- Enable PCMA -->
-    <entry name="speex/16000/1">0</entry> <!-- Disable Speex -->
-    <entry name="G729/8000/1">0</entry> <!-- Disable G729 -->
+    <entry name="opus/48000/2">1</entry>
+    <entry name="PCMU/8000/1">1</entry>
+    <entry name="PCMA/8000/1">1</entry>
+    <entry name="speex/16000/1">0</entry>
+    <entry name="G729/8000/1">0</entry>
   </section>
 
-  <!-- Video Codecs -->
   <section name="codecs_video" overwrite="true">
-    <entry name="VP8/90000">1</entry> <!-- Enable VP8 -->
-    <entry name="H264/90000">0</entry> <!-- Disable H264 -->
+    <entry name="VP8/90000">1</entry>
+    <entry name="H264/90000">0</entry>
   </section>
 
-  <!-- Misc Settings -->
   <section name="misc" overwrite="true">
-    <entry name="transient_provisioning" overwrite="true">1</entry>  <!-- Apply once -->
-    <entry name="auto_answer" overwrite="true">0</entry>             <!-- Auto-answer off -->
-    <entry name="log_level" overwrite="true">3</entry>               <!-- Logging level -->
+    <entry name="transient_provisioning" overwrite="true">1</entry>
+    <entry name="auto_answer" overwrite="true">0</entry>
+    <entry name="log_level" overwrite="true">3</entry>
   </section>
 
 </config>

@@ -6,7 +6,7 @@ requires-python = ">=3.10"
 dependencies = ["requests>=2.31", "beautifulsoup4>=4.12", "lxml>=5", "PyYAML>=6"]
 
 [project.optional-dependencies]
-browser = ["playwright>=1.45"]   # for JS-heavy / bot-protected retailers (Currys, AO, John Lewis)
+browser = ["patchright>=1.49", "curl_cffi>=0.7"]   # stealth browser + Chrome TLS fingerprint
 dev = ["pytest>=8"]
 
 [project.scripts]

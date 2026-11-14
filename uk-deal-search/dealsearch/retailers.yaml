@@ -1,0 +1,39 @@
+# UK retailers to search. `search` is a URL template ({q} = url-encoded query).
+# `browser: true` = needs Playwright (bot protection / client-side prices).
+# `selector` = CSS fallback if the page has no schema.org price.
+# `trust` notes are for humans; anything marked `suspect` is excluded by default.
+retailers:
+  - {name: AO, domain: ao.com, search: "https://ao.com/l/search/101/99/?search={q}", browser: true}
+  - {name: Currys, domain: currys.co.uk, search: "https://www.currys.co.uk/search?q={q}", browser: true}
+  - {name: Currys Business, domain: business.currys.co.uk, search: "https://business.currys.co.uk/catalogue/search?q={q}", browser: true, note: "Prices shown ex-VAT; business account"}
+  - {name: John Lewis, domain: johnlewis.com, search: "https://www.johnlewis.com/search?search-term={q}", browser: true}
+  - {name: Mark's Electrical, domain: markselectrical.co.uk, search: "https://markselectrical.co.uk/search?keyword={q}"}
+  - {name: Appliance City, domain: appliancecity.co.uk, search: "https://www.appliancecity.co.uk/shop/?s={q}"}
+  - {name: Paul Davies, domain: pauldavieskitchensandappliances.co.uk, search: "https://www.pauldavieskitchensandappliances.co.uk/catalogsearch/result/?q={q}"}
+  - {name: Harvey Norman UK, domain: harveynorman.co.uk, search: "https://www.harveynorman.co.uk/search?q={q}&type=product"}
+  - {name: Sonic Direct, domain: sonicdirect.co.uk, search: "https://www.sonicdirect.co.uk/search?q={q}"}
+  - {name: Donaghy Bros, domain: donaghybros.co.uk, search: "https://donaghybros.co.uk/catalogsearch/result/?q={q}"}
+  - {name: RDO, domain: rdo.co.uk, search: "https://www.rdo.co.uk/search?q={q}"}
+  - {name: Genesis, domain: genesishomeappliances.co.uk, search: "https://www.genesishomeappliances.co.uk/catalogsearch/result/?q={q}"}
+  - {name: Webbs, domain: webbs.tv, search: "https://www.webbs.tv/catalogsearch/result/?q={q}"}
+  - {name: Stellisons, domain: stellisonselectrical.co.uk, search: "https://www.stellisonselectrical.co.uk/catalogsearch/result/?q={q}"}
+  - {name: Hughes, domain: hughes.co.uk, search: "https://www.hughes.co.uk/search?q={q}"}
+  - {name: Euronics, domain: euronics.co.uk, search: "https://www.euronics.co.uk/search?q={q}"}
+  - {name: Appliances Direct, domain: appliancesdirect.co.uk, search: "https://www.appliancesdirect.co.uk/search?q={q}"}
+  - {name: Richer Sounds, domain: richersounds.com, search: "https://www.richersounds.com/catalogsearch/result/?q={q}"}
+  - {name: Costco UK, domain: costco.co.uk, search: "https://www.costco.co.uk/search?text={q}", browser: true, note: "Membership required"}
+  - {name: LG UK, domain: lg.com, search: "https://www.lg.com/uk/search/?search={q}", browser: true, note: "Check LG member price + promotions"}
+  - {name: Argos, domain: argos.co.uk, search: "https://www.argos.co.uk/search/{q}/", browser: true}
+  - {name: Very, domain: very.co.uk, search: "https://www.very.co.uk/search/{q}", browser: true}
+
+# Price comparison sites: used to DISCOVER retailers we don't list above.
+aggregators:
+  - {name: PriceSpy, search: "https://pricespy.co.uk/search?search={q}"}
+  - {name: PriceRunner, search: "https://www.pricerunner.com/results?q={q}"}
+  - {name: idealo, search: "https://www.idealo.co.uk/mscat.html?q={q}"}
+
+# Stores that look like clones/scams (implausible discounts, no company details,
+# copied product copy). Never treat their price as real.
+suspect_domains:
+  - tiedex.co.uk
+  - lifestylehomeappliancewarehouse.com

@@ -126,6 +126,11 @@ def fetch_browser(url: str, timeout_ms: int = 40000) -> str:
             browser = p.chromium.launch(executable_path=exe, **kw)
         try:
             page = browser.new_page(locale="en-GB", timezone_id="Europe/London")
+            if os.environ.get("DEALSEARCH_SAVE_DATA", "1") == "1":
+                # Prices are in the HTML/JSON; skip heavy assets (matters on mobile data).
+                page.route("**/*", lambda route: route.abort()
+                           if route.request.resource_type in ("image", "media", "font")
+                           else route.continue_())
             try:
                 resp = page.goto(url, timeout=timeout_ms, wait_until="domcontentloaded")
                 page.wait_for_timeout(3000)  # client-side prices; lets a JS challenge clear

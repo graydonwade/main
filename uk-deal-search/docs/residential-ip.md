@@ -21,6 +21,11 @@ residential IP is the fix. The stealth client (already built in) helps only once
   on a home machine exposed through a [cloudflared](https://github.com/cloudflare/cloudflared) /
   Tailscale tunnel.
 
+### 1b. Your Android phone as the exit node (no home broadband needed)
+Install Tailscale, enable **Run as exit node**, approve it in the admin console, and use `scripts/home-exit.sh` with `TS_EXIT_NODE=<phone name>`.
+Traffic goes out over mobile data, and carrier IPs are rarely blocked. Keep the app in the foreground during a run.
+iOS can't act as an exit node.
+
 ### 2. A UK mobile hotspot / 4G dongle
 Mobile carrier IPs (CGNAT, shared by thousands of users) are almost never hard-blocked. A cheap SIM in a
 Raspberry Pi 4G HAT, used as a Tailscale exit node, gives you a "mobile proxy" you own.
@@ -47,4 +52,5 @@ costs pennies on pay-per-GB plans.
 ## Knobs
 - `DEALSEARCH_PROXY`: proxy for every request (http/https/socks5).
 - `DEALSEARCH_HEADFUL=1`: visible browser (needs a display; it passes more checks than headless).
+- `DEALSEARCH_SAVE_DATA=1` (default): the browser skips images, video and fonts, cutting data use several-fold. Set it to 0 if a site needs them to render prices.
 - `DEALSEARCH_DELAY=4,8`: random gap in seconds between hits to the same site. Keep it, because burst traffic is what got Webbs, Donaghy and Hughes to start returning 403 mid-run.

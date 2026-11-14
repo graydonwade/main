@@ -69,3 +69,4 @@ trust:
   Yellow Electronics: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "real business (Trustpilot 4.8/826) but sells returns/surplus/box-damaged stock - a £999 WashTower is almost certainly not new"}
   TieDex: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "Tiedex Ltd 09350193 general reseller, not LG-authorised; Trustpilot 3.6-4/~260 with import-charge and stock complaints"}
   Lifestyle Home Appliance Warehouse: {verdict: AVOID, checked: 2026-11-14, evidence: "no company found; domain ~34 days old; Trustpilot 2.5/5 with non-delivery/scam reports; matches known clone-store pattern"}
+  LG UK: {verdict: LEGIT, checked: 2026-11-14, evidence: "manufacturer's own store"}

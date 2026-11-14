@@ -37,6 +37,13 @@ def cmd_search(args) -> int:
     return 0
 
 
+def _page_title(html: str) -> str:
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(html, "lxml")
+    h1 = soup.find("h1")
+    return f"{soup.title.get_text() if soup.title else ''} {h1.get_text() if h1 else ''}"
+
+
 def cmd_check(args) -> int:
     cfg = _retailers()
     suspect = set(cfg.get("suspect_domains", []))
@@ -47,6 +54,8 @@ def cmd_check(args) -> int:
     for prod in data["products"]:
         for lst in prod.get("listings", []):
             url = lst["url"]
+            if lst.get("exclude"):
+                continue
             why = rejection_reason(url, lst.get("title", ""), extra_blocked=suspect)
             if why:
                 lst["observed"] = {"date": today, "rejected": why}
@@ -54,20 +63,28 @@ def cmd_check(args) -> int:
                 continue
             mode = "always" if domain(url) in browser_domains else args.browser
             try:
-                offers = extract_offers(fetch(url, use_browser=mode), lst.get("selector"))
+                html = fetch(url, use_browser=mode)
+                offers = extract_offers(html, lst.get("selector"))
             except FetchError as e:
                 lst["observed"] = {"date": today, "error": str(e)[:200]}
                 print(f"FAIL {prod['model']} {domain(url)}: {e}")
                 continue
             new = [o for o in offers if not rejection_reason(url, o.name or "", o.condition)]
+            # Make sure the price belongs to THIS model (search pages list many products).
+            model = prod["model"].upper()
+            named = [o for o in new if model in f"{o.name} {o.sku} {o.mpn}".upper()]
+            if named:
+                new = named
+            elif model not in _page_title(html).upper() or len(new) > 1:
+                new = []
             if not new:
                 lst["observed"] = {"date": today, "error": "no new-condition price found"}
                 print(f"NONE {prod['model']} {domain(url)}")
                 continue
             o = min(new, key=lambda o: o.price)
-            lst["observed"] = {"date": today, "price": float(o.price),
+            lst["observed"] = {"date": today, "price": float(round(o.price, 2)),
                                "availability": o.availability, "via": o.source}
-            print(f"OK   {prod['model']} {domain(url)}: £{o.price} {o.availability or ''}")
+            print(f"OK   {prod['model']} {domain(url)}: £{o.price:,.2f} {o.availability or ''}")
     with open(args.products, "w") as f:
         yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
     return 0
@@ -143,7 +160,9 @@ def cmd_report(args) -> int:
         print("|---|---|---|---|---|---|")
         for eff, total, lst, used in rows:
             applied = "; ".join(f"{c.code or c.kind} ({c.status})" for c in used) or "—"
-            src = lst.get("price_source", "observed" if lst.get("observed") else "manual")
+            obs = lst.get("observed") or {}
+            src = (f"live {obs['date']}" if "price" in obs
+                   else lst.get("price_source", "manual") + (" (live check failed)" if obs else ""))
             tv = lst["_trust"]
             if median and total < median * Decimal("0.8"):
                 tv += " ⚠️ >20% below median"

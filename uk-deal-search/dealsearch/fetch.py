@@ -7,6 +7,7 @@ or an empty shell. If Playwright is installed we retry those in a real browser.
 from __future__ import annotations
 
 import logging
+import os
 import time
 
 import requests
@@ -48,12 +49,26 @@ def fetch_browser(url: str, timeout_ms: int = 30000) -> str:
     except ImportError as e:  # pragma: no cover - optional dependency
         raise FetchError("playwright not installed (pip install '.[browser]')") from e
     with sync_playwright() as p:
-        browser = p.chromium.launch()
+        # Use a pre-installed Chromium if the bundled one isn't downloaded.
+        exe = os.environ.get("DEALSEARCH_CHROMIUM") or (
+            "/opt/pw-browsers/chromium" if os.path.exists("/opt/pw-browsers/chromium") else None)
+        try:
+            browser = p.chromium.launch()
+        except Exception:
+            if not exe:
+                raise
+            browser = p.chromium.launch(executable_path=exe)
         try:
             page = browser.new_page(user_agent=UA, locale="en-GB")
-            page.goto(url, timeout=timeout_ms, wait_until="domcontentloaded")
-            page.wait_for_timeout(2500)  # let client-side price widgets render
-            return page.content()
+            try:
+                resp = page.goto(url, timeout=timeout_ms, wait_until="domcontentloaded")
+                page.wait_for_timeout(2500)  # let client-side price widgets render
+                html = page.content()
+            except Exception as e:  # playwright.Error, timeouts
+                raise FetchError(f"browser: {str(e).splitlines()[0][:150]}") from e
+            if resp is not None and resp.status >= 400:
+                raise FetchError(f"browser: HTTP {resp.status}")
+            return html
         finally:
             browser.close()
 

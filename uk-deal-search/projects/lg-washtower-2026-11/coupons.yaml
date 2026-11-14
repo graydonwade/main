@@ -1,7 +1,7 @@
 # status: likely = official promo / recent HUKD confirmation; unverified = aggregator only.
 # Nothing here has been tested at a checkout. `retailer` must match products.yaml.
 coupons:
-  - {retailer: Appliance City, code: SALE50, kind: fixed, value: 50, status: likely, source: "https://www.appliancecity.co.uk/brand/lg/black-friday/", note: "shown against LG WashTowers on BF page"}
+  - {retailer: Appliance City, code: SALE50, kind: fixed, value: 50, status: likely, source: "https://www.appliancecity.co.uk/brand/lg/black-friday/", note: "confirmed live 2026-11-14 on all three WashTower product pages; not tested at checkout"}
   - {retailer: Hughes, code: XMAS20, kind: fixed, value: 20, status: unverified, applies_to: "selected Samsung & LG laundry", source: "https://www.hughes.co.uk/promotions/extra-20-off-selected-samsung-and-lg-washing-machines/"}
   - {retailer: Mark's Electrical, code: null, kind: fixed, value: 55, status: unverified, note: "Marks+ membership price (-£55) costs £19.99/yr; net ~£35"}
   - {retailer: Mark's Electrical, code: "(10% appliance code)", kind: percent, value: 10, min_spend: 249, status: unverified, note: "last seen Jun-Aug 2026, likely expired", source: "https://www.latestdeals.co.uk/retailers/markselectrical.co.uk"}

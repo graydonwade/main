@@ -23,6 +23,7 @@ from . import coupons as cp
 from .extract import extract_offers
 from .fetch import FetchError, fetch
 from .filters import domain, rejection_reason
+from .vet import vet
 
 
 def _retailers() -> dict:
@@ -72,6 +73,41 @@ def cmd_check(args) -> int:
     return 0
 
 
+def _trust_map() -> dict[str, dict]:
+    """retailer name -> {verdict, evidence, checked} from retailers.yaml."""
+    cfg = _retailers()
+    out = dict(cfg.get("trust") or {})
+    for d in cfg.get("suspect_domains", []):
+        out.setdefault(d, {"verdict": "AVOID", "evidence": "listed in suspect_domains"})
+    return out
+
+
+def cmd_vet(args) -> int:
+    targets = list(args.domains)
+    if args.products:
+        with open(args.products) as f:
+            for prod in yaml.safe_load(f)["products"]:
+                targets += [domain(l["url"]) for l in prod.get("listings", []) if not l.get("exclude")]
+    cfg = _retailers()
+    by_name = cfg.get("trust") or {}
+    known = {r["domain"]: by_name.get(r["name"]) for r in cfg["retailers"]}
+    for d in dict.fromkeys(targets):
+        v = vet(d)
+        manual = known.get(d)
+        print(f"\n{d}: automated={v.verdict}" + (f"  researched={manual['verdict']}" if manual else ""))
+        print(f"  domain registered {v.domain_registered or '?'} | company no {v.company_number or '-'} | "
+              f"VAT {v.vat_number or '-'} | UK address {'yes' if v.has_uk_address else 'no'}")
+        if v.ch_status:
+            print(f"  Companies House: {v.ch_status}, incorporated {v.ch_incorporated}")
+        if v.trustpilot_score is not None:
+            print(f"  Trustpilot {v.trustpilot_score} ({v.trustpilot_reviews} reviews)")
+        for f in v.red_flags:
+            print(f"  RED FLAG: {f}")
+        for e in v.errors:
+            print(f"  (check failed: {e})")
+    return 0
+
+
 def _price(lst: dict) -> Decimal | None:
     obs = lst.get("observed") or {}
     p = obs.get("price", lst.get("price"))
@@ -82,10 +118,16 @@ def cmd_report(args) -> int:
     with open(args.products) as f:
         data = yaml.safe_load(f)
     coupons = cp.load(args.coupons) if args.coupons else []
+    trust = _trust_map()
     for prod in data["products"]:
         rows = []
         for lst in prod.get("listings", []):
             if lst.get("exclude"):
+                continue
+            t = trust.get(lst["retailer"]) or trust.get(domain(lst["url"])) or {"verdict": "UNVERIFIED"}
+            lst["_trust"] = t["verdict"]
+            if t["verdict"] == "AVOID" and not args.include_avoid:
+                print(f"<!-- excluded {lst['retailer']}: AVOID - {t.get('evidence', '')} -->")
                 continue
             price = _price(lst)
             if price is None:
@@ -94,13 +136,18 @@ def cmd_report(args) -> int:
             eff, used = cp.best_stack(lst["retailer"], total, coupons, args.include_unverified)
             rows.append((eff, total, lst, used))
         rows.sort(key=lambda r: r[0])
+        trusted = sorted(r[1] for r in rows if r[2]["_trust"].startswith("LEGIT"))
+        median = trusted[len(trusted) // 2] if trusted else None
         print(f"\n## {prod['model']} — {prod.get('name', '')}\n")
-        print("| Retailer | Listed + delivery | After codes/cashback | Applied | Price source |")
-        print("|---|---|---|---|---|")
+        print("| Retailer | Trust | Listed + delivery | After codes/cashback | Applied | Price source |")
+        print("|---|---|---|---|---|---|")
         for eff, total, lst, used in rows:
             applied = "; ".join(f"{c.code or c.kind} ({c.status})" for c in used) or "—"
             src = lst.get("price_source", "observed" if lst.get("observed") else "manual")
-            print(f"| [{lst['retailer']}]({lst['url']}) | £{total:,.2f} | £{eff:,.2f} | {applied} | {src} |")
+            tv = lst["_trust"]
+            if median and total < median * Decimal("0.8"):
+                tv += " ⚠️ >20% below median"
+            print(f"| [{lst['retailer']}]({lst['url']}) | {tv} | £{total:,.2f} | £{eff:,.2f} | {applied} | {src} |")
     return 0
 
 
@@ -115,6 +162,10 @@ def main(argv: list[str] | None = None) -> int:
     r = sub.add_parser("report"); r.add_argument("products"); r.add_argument("--coupons")
     r.add_argument("--include-unverified", action="store_true",
                    help="also apply aggregator codes nobody has confirmed")
+    r.add_argument("--include-avoid", action="store_true", help="show retailers vetted as AVOID")
+    v = sub.add_parser("vet", help="legitimacy checks for retailer domains")
+    v.add_argument("domains", nargs="*"); v.add_argument("--products")
+    v.set_defaults(fn=cmd_vet)
     r.set_defaults(fn=cmd_report)
     args = ap.parse_args(argv)
     logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING)

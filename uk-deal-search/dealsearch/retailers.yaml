@@ -25,6 +25,8 @@ retailers:
   - {name: LG UK, domain: lg.com, search: "https://www.lg.com/uk/search/?search={q}", browser: true, note: "Check LG member price + promotions"}
   - {name: Argos, domain: argos.co.uk, search: "https://www.argos.co.uk/search/{q}/", browser: true}
   - {name: Very, domain: very.co.uk, search: "https://www.very.co.uk/search/{q}", browser: true}
+  - {name: Carters Direct, domain: cartersdirect.co.uk, search: "https://www.cartersdirect.co.uk/catalogsearch/result/?q={q}"}
+  - {name: DB Domestics, domain: dbdomestics.com, search: "https://www.dbdomestics.com/search?q={q}"}
 
 # Price comparison sites: used to DISCOVER retailers we don't list above.
 aggregators:
@@ -37,3 +39,33 @@ aggregators:
 suspect_domains:
   - tiedex.co.uk
   - lifestylehomeappliancewarehouse.com
+
+# Researched legitimacy verdicts (LEGIT / LEGIT-WITH-CAVEATS / UNVERIFIED / AVOID).
+# Keyed by retailer name as used in products.yaml. `report` drops AVOID and labels the rest.
+# Sources: search snippets of Companies House, Endole, Trustpilot, euronics.co.uk (2026-11-14);
+# re-confirm the company number at find-and-update.company-information.service.gov.uk before paying.
+trust:
+  Mark's Electrical: {verdict: LEGIT, checked: 2026-11-14, evidence: "Marks Electrical Ltd 04463433 (AIM-listed group plc 13509635); est. 2002 Leicester; Trustpilot 4.8/~116k. FY26 profit down but £4.4m net cash"}
+  Appliance City: {verdict: LEGIT, checked: 2026-11-14, evidence: "Bunny Appliance Warehouse Ltd 03027841 (inc. 1995), Nottingham showroom; Trustpilot 4.5/~45k. NB unrelated 'Appliance City Ltd' 05839129 is in liquidation - different firm"}
+  Webbs: {verdict: LEGIT, checked: 2026-11-14, evidence: "Webbs of Cannock Ltd 08002533, trading since 1958, Euronics member; Trustpilot 4.8/~950"}
+  Costco UK: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "Costco Wholesale UK Ltd 02635489; membership required; Costco gives 2yr cover, extra LG years must be registered with LG within 90 days"}
+  Carters Direct: {verdict: LEGIT, checked: 2026-11-14, evidence: "Sussex family firm since 1987, ~7 showrooms, Euronics member; Trustpilot 4.9/~2.4k; company no. not confirmed"}
+  Sonic Direct: {verdict: LEGIT, checked: 2026-11-14, evidence: "Sonic Megastore Ltd 06805107 (inc. 2009), Bradford megastore, Euronics member; Trustpilot 4.9/~37k"}
+  Donaghy Bros: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "NI030598 (inc. 1996, trading since 1964), N. Ireland; Trustpilot 4.5/~15.5k. Its content is mirrored on donaghybros.duckdns.org - buy only at donaghybros.co.uk; confirm UK (not ROI) stock"}
+  DB Domestics: {verdict: LEGIT, checked: 2026-11-14, evidence: "D.B. Domestic Appliances Ltd 04889218, Polegate; Trustpilot 4.9/~4.3k"}
+  RDO: {verdict: LEGIT, checked: 2026-11-14, evidence: "RDO Holdings Ltd 12527060, Reigate showroom, Euronics member; Trustpilot ~4.9/9k+"}
+  Genesis: {verdict: LEGIT, checked: 2026-11-14, evidence: "Genesis Home Appliances Ltd 04698405 (inc. 2003), Workington; small - Trustpilot 4.5/64, reviews.co.uk 4.8/~270"}
+  Paul Davies: {verdict: LEGIT, checked: 2026-11-14, evidence: "P & S Domestics Ltd, Bolton, Euronics member; Trustpilot 4.8/~1.6-2k"}
+  Stellisons: {verdict: LEGIT, checked: 2026-11-14, evidence: "Stellison Ltd 00743883 (inc. 1962), Essex/Kent/Suffolk stores, Euronics member; Trustpilot ~4.5-4.8/~2k"}
+  Harvey Norman UK: {verdict: LEGIT, checked: 2026-11-14, evidence: "Harvey Norman Trading (UK) Ltd 15512318 (inc. 2024) - genuine Harvey Norman group, 4 UK stores"}
+  Euronics: {verdict: LEGIT, checked: 2026-11-14, evidence: "Euronics Ltd 03029834 buying group; contract is with the member store"}
+  Appliances Direct: {verdict: LEGIT, checked: 2026-11-14, evidence: "Buy It Direct Ltd 04171412 (inc. 2001); Trustpilot 4.4/~130k. Also sells graded stock - check listing is new"}
+  Currys: {verdict: LEGIT, checked: 2026-11-14, evidence: "major UK chain"}
+  Currys Business: {verdict: LEGIT, checked: 2026-11-14, evidence: "Currys business arm"}
+  John Lewis: {verdict: LEGIT, checked: 2026-11-14, evidence: "major UK chain"}
+  AO: {verdict: LEGIT, checked: 2026-11-14, evidence: "major UK chain"}
+  Very: {verdict: LEGIT, checked: 2026-11-14, evidence: "major UK chain"}
+  Hughes: {verdict: LEGIT, checked: 2026-11-14, evidence: "established UK chain"}
+  Yellow Electronics: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "real business (Trustpilot 4.8/826) but sells returns/surplus/box-damaged stock - a £999 WashTower is almost certainly not new"}
+  TieDex: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "Tiedex Ltd 09350193 general reseller, not LG-authorised; Trustpilot 3.6-4/~260 with import-charge and stock complaints"}
+  Lifestyle Home Appliance Warehouse: {verdict: AVOID, checked: 2026-11-14, evidence: "no company found; domain ~34 days old; Trustpilot 2.5/5 with non-delivery/scam reports; matches known clone-store pattern"}

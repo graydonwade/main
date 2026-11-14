@@ -5,6 +5,7 @@ Find the cheapest **new** price for a product across UK retailers, then stack th
 - Reads prices from `schema.org` Product JSON-LD and meta tags. Most UK appliance retailers publish these, so there's no per-site scraper to maintain. A per-listing CSS `selector` covers the rest.
 - Rejects eBay and marketplace resellers, outlet storefronts, and anything marked used, refurbished, graded, ex-display or open-box (`dealsearch/filters.py`).
 - Uses Playwright for bot-protected sites that render prices with JavaScript (Currys, AO, John Lewis, Costco, LG).
+- **Vets every retailer** (`dealsearch vet`). Automated checks cover domain age (RDAP), a company number, VAT number and UK address on the site, Companies House status (using `$CH_API_KEY`) and the Trustpilot rating. Researched verdicts are recorded in `retailers.yaml`. `report` drops `AVOID` retailers and flags prices more than 20% below the median of trusted retailers.
 - Coupons carry a confidence level (`verified` / `likely` / `unverified`). The ranking uses one checkout code plus one cashback offer, and applies only `likely`+ codes unless you pass `--include-unverified`.
 
 ## Use
@@ -12,6 +13,7 @@ Find the cheapest **new** price for a product across UK retailers, then stack th
 ```bash
 pip install -e '.[browser,dev]' && playwright install chromium
 dealsearch search WT1210WWF                       # retailer + comparison-site search URLs, to discover listings
+dealsearch vet --products projects/lg-washtower-2026-11/products.yaml   # legitimacy checks
 dealsearch check  projects/lg-washtower-2026-11/products.yaml   # fetch live prices into the file
 dealsearch report projects/lg-washtower-2026-11/products.yaml \
        --coupons projects/lg-washtower-2026-11/coupons.yaml     # ranked markdown table

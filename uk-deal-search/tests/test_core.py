@@ -42,3 +42,19 @@ def test_best_stack_one_code_plus_cashback():
     eff, used = best_stack("AC", Decimal(1500), cs)
     assert [c.code for c in used] == ["SALE50", None]
     assert eff == Decimal(1450) - Decimal("29.00")
+
+
+def test_vet_scoring():
+    from dealsearch.vet import Vetting, score
+    clone = Vetting("cheap-washers.shop", domain_registered="2026-09-01")
+    assert score(clone) == "AVOID"
+    real = Vetting("example.co.uk", domain_registered="2005-01-01", company_number="01234567",
+                   vat_number="GB123456789", trustpilot_score=4.6, trustpilot_reviews=5000)
+    assert score(real) == "LEGIT"
+
+
+def test_company_regex():
+    from dealsearch.vet import COMPANY_NO, VAT_NO
+    t = "Registered in England. Company Registration No: 04018917. VAT No. GB 123 4567 89"
+    assert COMPANY_NO.search(t).group(1) == "04018917"
+    assert VAT_NO.search(t)

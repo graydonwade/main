@@ -58,3 +58,17 @@ def test_company_regex():
     t = "Registered in England. Company Registration No: 04018917. VAT No. GB 123 4567 89"
     assert COMPANY_NO.search(t).group(1) == "04018917"
     assert VAT_NO.search(t)
+
+
+def test_fetch_api_template(monkeypatch):
+    import dealsearch.fetch as f
+    seen = {}
+
+    class R:
+        status_code = 200
+        text = "<html>ok</html>"
+
+    monkeypatch.setenv("DEALSEARCH_FETCH_API", "https://api.example/?k=1&url={url}")
+    monkeypatch.setattr("requests.get", lambda u, timeout: seen.setdefault("u", u) and R())
+    assert f.fetch_api("https://www.currys.co.uk/p?a=1") == "<html>ok</html>"
+    assert seen["u"] == "https://api.example/?k=1&url=https%3A%2F%2Fwww.currys.co.uk%2Fp%3Fa%3D1"

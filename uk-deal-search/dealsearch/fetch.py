@@ -149,14 +149,38 @@ def fetch_browser(url: str, timeout_ms: int = 40000) -> str:
             browser.close()
 
 
+# Hosted "unlocker" APIs fetch the page from their own residential IPs and solve bot
+# checks. Set DEALSEARCH_FETCH_API to a URL template containing {url}, e.g.
+#   https://api.scraperapi.com/?api_key=KEY&country_code=uk&render=true&url={url}
+#   https://app.scrapingbee.com/api/v1/?api_key=KEY&country_code=gb&premium_proxy=true&url={url}
+#   https://api.zenrows.com/v1/?apikey=KEY&js_render=true&premium_proxy=true&proxy_country=gb&url={url}
+# Used only after the direct attempts fail, so it spends credits on blocked sites alone.
+def fetch_api(url: str, timeout: float = 90.0) -> str:
+    from urllib.parse import quote
+    import requests
+    tpl = os.environ.get("DEALSEARCH_FETCH_API")
+    if not tpl:
+        raise FetchError("blocked; set DEALSEARCH_FETCH_API or DEALSEARCH_PROXY (see docs/residential-ip.md)")
+    try:
+        r = requests.get(tpl.replace("{url}", quote(url, safe="")), timeout=timeout)
+    except requests.RequestException as e:
+        raise FetchError(f"fetch-api: {e}") from e
+    if r.status_code != 200:
+        raise FetchError(f"fetch-api: HTTP {r.status_code} {r.text[:120]}")
+    return r.text
+
+
 def fetch(url: str, use_browser: str = "auto") -> str:
     """use_browser: 'never' | 'auto' (fallback on failure) | 'always'."""
-    if use_browser == "always":
-        return fetch_browser(url)
-    try:
-        return fetch_http(url)
-    except FetchError as e:
-        if use_browser == "never":
-            raise
-        log.info("http failed (%s); retrying with browser", e)
-        return fetch_browser(url)
+    errors = []
+    attempts = [fetch_browser] if use_browser == "always" else (
+        [fetch_http] if use_browser == "never" else [fetch_http, fetch_browser])
+    for fn in attempts:
+        try:
+            return fn(url)
+        except FetchError as e:
+            errors.append(str(e))
+            log.info("%s failed (%s)", fn.__name__, e)
+    if os.environ.get("DEALSEARCH_FETCH_API"):
+        return fetch_api(url)
+    raise FetchError(errors[-1])

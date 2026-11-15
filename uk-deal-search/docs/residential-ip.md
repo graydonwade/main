@@ -37,6 +37,15 @@ an EWDCI member, and it publishes a KYC policy. **Static ISP proxies** (resident
 data centres) are a cleaner, cheaper option for a handful of sites. Our volume (a few dozen pages per run)
 costs pennies on pay-per-GB plans.
 
+### 4. Hosted unlocker API (no hardware, set up from a phone)
+Sign up for a scraping API with a free trial (ScraperAPI, ScrapingBee, ZenRows, Bright Data Web Unlocker…)
+and set `DEALSEARCH_FETCH_API` to its URL template with `{url}` where the target goes (examples in
+`dealsearch/fetch.py`). It's used **only** when the direct fetch and the browser both fail, so credits go
+on the blocked retailers alone. Store the key as an environment secret, never in the repo.
+
+Tested and **not** viable from a cloud IP: PriceSpy (Cloudflare), PriceRunner (Akamai), idealo (403),
+the Wayback Machine (no recent copies), Google Shopping (results need JavaScript). Free proxy lists and Tor are on the same blocklists.
+
 ## Open-source tooling (GitHub)
 | Project | What it does | Status here |
 |---|---|---|

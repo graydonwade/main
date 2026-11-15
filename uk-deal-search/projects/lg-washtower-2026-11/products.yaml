@@ -52,11 +52,9 @@ products:
       via: meta
   - retailer: Harvey Norman UK
     url: https://www.harveynorman.co.uk/products/lg-washtower-12kg-washer-10kg-dryer-freestanding-washer-dryer-wt1210wwf-white
-    price: 1499
-    price_source: snippet
-    observed:
-      date: '2026-11-14'
-      error: 'browser: HTTP 403'
+    price: 1299
+    price_source: user screenshot 2026-11-15
+    note: Black Friday, was £1,809; delivery cost not seen
   - retailer: Currys
     url: https://www.currys.co.uk/products/lg-washtower-wt1210wwf-wifienabled-12-kg-washer-dryer-white-10301982.html
     price: 1599
@@ -262,6 +260,11 @@ products:
 - model: WT1210NBTN1
   name: LG WashTower 12kg/10kg washer dryer, green & beige
   listings:
+  - retailer: Harvey Norman UK
+    url: https://www.harveynorman.co.uk/products/lg-washtower-12kg-washer-10kg-dryer-freestanding-washer-dryer-wt1210nbtn1-green-beige
+    price: 1199
+    price_source: user screenshot 2026-11-15
+    note: Black Friday, was £1,499; delivery cost not seen
   - retailer: Costco UK
     url: https://www.costco.co.uk/c/LG-WT1210NBTN1-12kg10kg-1400rpm-WashTower-Rated-in-AA-in-Green-Beige/p/667714
     price: 1299.99

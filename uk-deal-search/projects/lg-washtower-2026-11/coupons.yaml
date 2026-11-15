@@ -1,6 +1,7 @@
 # status: likely = official promo / recent HUKD confirmation; unverified = aggregator only.
 # Nothing here has been tested at a checkout. `retailer` must match products.yaml.
 coupons:
+  - {retailer: Mark's Electrical, code: MEMULTIBUY, kind: percent, value: 10, status: verified, applies_to: "2+ eligible items, each >= £249, same order (WashTowers are eligible)", source: "https://markselectrical.co.uk/voucher-terms", note: "basket-tested 2026-11-15: 2x WT1210WWF £2,598 -> £2,338.20 (-£259.80). Single item = no discount, so the report doesn't auto-apply it"}
   - {retailer: Sonic Direct, code: VPV5DS500, kind: fixed, value: 500, status: verified, applies_to: "WT1210BBTN1 only", source: "https://www.sonicdirect.co.uk/cat/VOUCHER-CODE-DISCOUNTS", note: "applied in a real basket 2026-11-15: £1,999 -> £1,499"}
   - {retailer: Appliance City, code: SALE50, kind: fixed, value: 50, status: verified, source: "https://www.appliancecity.co.uk/brand/lg/black-friday/", note: "applied in a real basket 2026-11-15 on all three WashTowers (WooCommerce Store API)"}
   - {retailer: Hughes, code: XMAS20, kind: fixed, value: 20, status: unverified, applies_to: "selected Samsung & LG laundry", source: "https://www.hughes.co.uk/promotions/extra-20-off-selected-samsung-and-lg-washing-machines/"}

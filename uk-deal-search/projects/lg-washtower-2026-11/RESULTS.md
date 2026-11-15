@@ -22,7 +22,7 @@ Candidates were codes published on the retailer's own pages and on coupon sites,
 |---|---|---|---|
 | Appliance City | WooCommerce Store API | ~35 per model | **SALE50 works on all three** (−£50). SALE10/25/30/75/100/150/200/250 exist but are locked to other products |
 | Sonic Direct | browser | product voucher + list | **VPV5DS500: −£500 on black** (£1,999 → £1,499). No voucher on white (already £1,299) |
-| Mark's Electrical | basket XML endpoint | 25 per model | none valid; 9 generic codes exist but are **expired** |
+| Mark's Electrical | basket XML endpoint | 37 | **MEMULTIBUY: 10% off when the WashTower is bought with another eligible item of £249+** (white: £1,299 → £1,169.10). LGSAVE50/100/200 and QUOSAVE10 are valid but for other products; OUTLET10/OUTLET5 are outlet stock only; HUKD5/HUKD10, MARKS5/MARKS10 and 9 generic codes are expired |
 | Paul Davies | Magento REST | 24 per model | none |
 | Donaghy Bros | Magento REST | 24 | none |
 | Carters Direct | Magento REST | 24 | none |

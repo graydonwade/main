@@ -170,6 +170,45 @@ def cmd_report(args) -> int:
     return 0
 
 
+def cmd_coupons(args) -> int:
+    from .coupontest import detect_platform, test_codes
+    from .harvest import harvest
+    with open(args.products) as f:
+        data = yaml.safe_load(f)
+    found_any = []
+    for prod in data["products"]:
+        if args.model and prod["model"] not in args.model:
+            continue
+        for lst in prod.get("listings", []):
+            if lst.get("exclude") or (args.retailer and lst["retailer"] not in args.retailer):
+                continue
+            url = lst["url"]
+            plat = lst.get("platform") or detect_platform(url)
+            if not plat:
+                print(f"\n{prod['model']} @ {lst['retailer']}: no basket adapter (custom checkout) - skipped")
+                continue
+            print(f"\n{prod['model']} @ {lst['retailer']}")
+            cands = harvest(domain(url), [url] + lst.get("promo_urls", []), seasonal=not args.no_seasonal)
+            for c in args.code or []:
+                cands.setdefault(c.upper(), "command line")
+            cands = {c: v for c, v in cands.items() if c != prod["model"] and c != lst.get("sku")}
+            try:
+                base, results = test_codes(url, list(cands), plat, lst.get("sku"))
+            except Exception as e:  # noqa: BLE001
+                print(f"  basket setup failed: {e}")
+                continue
+            for r in results:
+                if r.ok and r.discount > 0:
+                    found_any.append((prod["model"], lst["retailer"], r, base, cands[r.code]))
+    print("\n## Working codes\n")
+    if not found_any:
+        print("none found")
+    for model, retailer, r, base, src in sorted(found_any, key=lambda x: (x[0], x[2].total)):
+        print(f"- {model} @ {retailer}: **{r.code}** -£{r.discount:,.2f} → £{r.total:,.2f} "
+              f"(from £{base:,.2f}; source: {src})")
+    return 0
+
+
 def main(argv: list[str] | None = None) -> int:
     ap = argparse.ArgumentParser(prog="dealsearch")
     ap.add_argument("-v", "--verbose", action="store_true")
@@ -182,6 +221,12 @@ def main(argv: list[str] | None = None) -> int:
     r.add_argument("--include-unverified", action="store_true",
                    help="also apply aggregator codes nobody has confirmed")
     r.add_argument("--include-avoid", action="store_true", help="show retailers vetted as AVOID")
+    cc = sub.add_parser("coupons", help="harvest published codes and test them in a real basket")
+    cc.add_argument("products"); cc.add_argument("--model", action="append")
+    cc.add_argument("--retailer", action="append"); cc.add_argument("--code", action="append",
+                                                                    help="extra code to try")
+    cc.add_argument("--no-seasonal", action="store_true")
+    cc.set_defaults(fn=cmd_coupons)
     v = sub.add_parser("vet", help="legitimacy checks for retailer domains")
     v.add_argument("domains", nargs="*"); v.add_argument("--products")
     v.set_defaults(fn=cmd_vet)

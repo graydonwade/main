@@ -72,3 +72,16 @@ def test_fetch_api_template(monkeypatch):
     monkeypatch.setattr("requests.get", lambda u, timeout: seen.setdefault("u", u) and R())
     assert f.fetch_api("https://www.currys.co.uk/p?a=1") == "<html>ok</html>"
     assert seen["u"] == "https://api.example/?k=1&url=https%3A%2F%2Fwww.currys.co.uk%2Fp%3Fa%3D1"
+
+
+def test_harvest_patterns():
+    from dealsearch.harvest import codes_in, family
+    t = "Save £50 with voucher code: SALE50. Enter 'WINTER' at checkout. Click the button to reveal code BUTTON"
+    assert codes_in(t) == {"SALE50", "WINTER"}
+    assert "SALE100" in family({"SALE50"}) and "SALE50" not in family({"SALE50"})
+
+
+def test_prefilled_voucher():
+    from dealsearch.harvest import prefilled
+    html = '<input type="text" name="DetailVoucher" id="DetailVoucher" class="input-voucher" value="VPV5DS500">'
+    assert prefilled(html) == {"VPV5DS500"}

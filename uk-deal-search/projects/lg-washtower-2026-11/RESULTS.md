@@ -2,20 +2,36 @@
 
 Prices marked **live** were read from the retailer's own product page on 2026-11-14.
 Rows marked *snippet (live check failed)* belong to sites that block automated access (AO, Currys, Argos, Very, Hughes, Harvey Norman); their figures are older search-snippet prices and need checking by hand.
-No coupon code has been tried at a checkout.
+Coupon codes were batch-tested in real baskets on 2026-11-15 (`dealsearch coupons`); see *Coupon testing* below.
 
 ## Cheapest per model (live prices, legitimate retailers)
 
 | Model | Cheapest | Runner-up | Notes |
 |---|---|---|---|
 | **WT1210WWF** (white) | **£1,299**: [Mark's Electrical](https://markselectrical.co.uk/wt1210wwf_lg-washer-dryer) (free delivery and recycling) or [Sonic Direct](https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210WWF-Washer-Dryer-in-White-1400-Spin-12kg10kg-A-Rated-WashTower-with-Dual-Inverter-Heat-Pump) (RRP £1,899, in stock) | [Paul Davies](https://www.pauldavieskitchensandappliances.co.uk/lg-wt1210wwf-12kg-10kg-1400-spin-washer-dryer-white.html) £1,299.99 ("only 3 left") | **£1,244** at Mark's with Marks+ (£19.99/yr, so £1,263.99 net). Appliance City £1,399 − SALE50 = £1,349 |
-| **WT1210BBTN1** (black) | **£1,459**: [Webbs](https://www.webbs.tv/lg-washtower-wt1210bbtn1-heat-pump-12-10kg-washer-dryer-platinum-black.html) (was £1,699, 5-yr warranty) or [Donaghy Bros](https://donaghybros.co.uk/lg-washtower-wt1210bbtn1-12kg-10kg-1400rpm-washer-dryer-black.html) (in stock) | [Paul Davies](https://www.pauldavieskitchensandappliances.co.uk/lg-wt1210bbtn1-12kg-10kg-1400-spin-washer-dryer-black.html) £1,479.99 | Costco £1,499.98 (members; page shows out-of-stock text). Appliance City £1,599 − SALE50 = £1,549. Mark's £1,599 / £1,544 Marks+ |
+| **WT1210BBTN1** (black) | **£1,459**: [Webbs](https://www.webbs.tv/lg-washtower-wt1210bbtn1-heat-pump-12-10kg-washer-dryer-platinum-black.html) (was £1,699, 5-yr warranty) or [Donaghy Bros](https://donaghybros.co.uk/lg-washtower-wt1210bbtn1-12kg-10kg-1400rpm-washer-dryer-black.html) (in stock) | [Paul Davies](https://www.pauldavieskitchensandappliances.co.uk/lg-wt1210bbtn1-12kg-10kg-1400-spin-washer-dryer-black.html) £1,479.99 | Costco £1,499.98 (members; page shows out-of-stock text). **Sonic Direct £1,999 − code VPV5DS500 = £1,499** (verified in basket). Appliance City £1,599 − SALE50 = £1,549. Mark's £1,599 / £1,544 Marks+ |
 | **WT1210NBTN1** (green/beige) | **£1,449**: [Appliance City](https://www.appliancecity.co.uk/laundry/washer-dryers/freestanding-washer-dryers/lg-wt1210nbtn1-12kg-10kg-washtower-turbowash-washer-dryer-green-beige/) £1,499 − code **SALE50** (in stock, free delivery, free 5-yr warranty to claim) | [LG UK](https://www.lg.com/uk/laundry/washtowers/wt1210nbtn1/) £1,599 − 5% member = £1,519 | If LG's 10% refer-a-friend code stacks with the member discount, LG comes to about **£1,367**, with free installation. Unconfirmed: you need someone's referral code. Costco's £1,299.99 listing is gone |
 
 Changes since the snippet-based pass: Sonic Direct white dropped to £1,299; Paul Davies is £1,299.99 white and £1,479.99 black; Costco black is £1,499.98, not £1,449.99; John Lewis black is £1,999; LG UK is £1,599 white (out of stock), £1,999 black and £1,599 green.
 
+## Coupon testing (real baskets, 2026-11-15)
+Codes were added to an anonymous basket through each shop's own basket API or storefront. Nothing was ordered.
+Candidates were codes published on the retailer's own pages and on coupon sites, the same prefix with other common amounts (e.g. SALE10–SALE250), and 24 common seasonal codes.
+
+| Retailer | Method | Codes tried | Result |
+|---|---|---|---|
+| Appliance City | WooCommerce Store API | ~35 per model | **SALE50 works on all three** (−£50). SALE10/25/30/75/100/150/200/250 exist but are locked to other products |
+| Sonic Direct | browser | product voucher + list | **VPV5DS500: −£500 on black** (£1,999 → £1,499). No voucher on white (already £1,299) |
+| Mark's Electrical | basket XML endpoint | 25 per model | none valid; 9 generic codes exist but are **expired** |
+| Paul Davies | Magento REST | 24 per model | none |
+| Donaghy Bros | Magento REST | 24 | none |
+| Carters Direct | Magento REST | 24 | none |
+| Webbs | browser (REST blocked) | 24 | none |
+| Currys / AO / Argos / Very | — | — | not testable: these sites block data-centre IPs (see `docs/residential-ip.md`) |
+
 ## Other savings
-- **Appliance City `SALE50`**: shown live on all three WashTower pages.
+- **Appliance City `SALE50`**: verified in a real basket on all three WashTowers.
+- **Sonic Direct `VPV5DS500`**: verified, −£500 on the black WT1210BBTN1.
 - **LG UK**: free membership gives 5% off the first order, a refer-a-friend code gives 10% (reported to stack), and WashTowers come with free installation. Trade-in saves up to £100. TopCashback was advertising 10% on LG appliances (8 Nov newsletter), but it usually won't pay out alongside a non-affiliate code.
 - **Price beat**: Sonic Direct ("We Price Beat") and Richer Sounds; quote the cheapest live price above.
 - **Blue Light Card**: AO £15 off, Currys up to £25 off.
@@ -53,10 +69,10 @@ Lifestyle Home Appliance Warehouse (AVOID, see above).
 
 | Retailer | Trust | Listed + delivery | After codes/cashback | Applied | Price source |
 |---|---|---|---|---|---|
+| [Sonic Direct](https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210WWF-Washer-Dryer-in-White-1400-Spin-12kg10kg-A-Rated-WashTower-with-Dual-Inverter-Heat-Pump) | LEGIT | £1,299.00 | £799.00 | VPV5DS500 (verified) | live 2026-11-14 |
 | [Mark's Electrical](https://markselectrical.co.uk/wt1210wwf_lg-washer-dryer) | LEGIT | £1,299.00 | £1,299.00 | — | live 2026-11-14 |
-| [Sonic Direct](https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210WWF-Washer-Dryer-in-White-1400-Spin-12kg10kg-A-Rated-WashTower-with-Dual-Inverter-Heat-Pump) | LEGIT | £1,299.00 | £1,299.00 | — | live 2026-11-14 |
 | [Paul Davies](https://www.pauldavieskitchensandappliances.co.uk/lg-wt1210wwf-12kg-10kg-1400-spin-washer-dryer-white.html) | LEGIT | £1,299.99 | £1,299.99 | — | live 2026-11-14 |
-| [Appliance City](https://www.appliancecity.co.uk/laundry/lg-wt1210wwf-12kg-10kg-washtower-turbowash-washer-dryer-white/) | LEGIT | £1,399.00 | £1,349.00 | SALE50 (likely) | live 2026-11-14 |
+| [Appliance City](https://www.appliancecity.co.uk/laundry/lg-wt1210wwf-12kg-10kg-washtower-turbowash-washer-dryer-white/) | LEGIT | £1,399.00 | £1,349.00 | SALE50 (verified) | live 2026-11-14 |
 | [John Lewis](https://www.johnlewis.com/lg-wt1210bbtn1-wt1210wwf-washtower-freestanding-heat-pump-washer-dryer-12kg-10kg-load-1400rpm-spin/white/p112485759) | LEGIT | £1,499.00 | £1,499.00 | — | snippet (live check failed) |
 | [DB Domestics](https://www.dbdomestics.com/search?q=WT1210WWF) | LEGIT | £1,499.00 | £1,499.00 | — | snippet (live check failed) |
 | [Harvey Norman UK](https://www.harveynorman.co.uk/products/lg-washtower-12kg-washer-10kg-dryer-freestanding-washer-dryer-wt1210wwf-white) | LEGIT | £1,499.00 | £1,499.00 | — | snippet (live check failed) |
@@ -73,8 +89,9 @@ Lifestyle Home Appliance Warehouse (AVOID, see above).
 | [Webbs](https://www.webbs.tv/lg-washtower-wt1210bbtn1-heat-pump-12-10kg-washer-dryer-platinum-black.html) | LEGIT | £1,459.00 | £1,459.00 | — | live 2026-11-14 |
 | [Donaghy Bros](https://donaghybros.co.uk/lg-washtower-wt1210bbtn1-12kg-10kg-1400rpm-washer-dryer-black.html) | LEGIT-WITH-CAVEATS | £1,459.00 | £1,459.00 | — | live 2026-11-14 |
 | [Paul Davies](https://www.pauldavieskitchensandappliances.co.uk/lg-wt1210bbtn1-12kg-10kg-1400-spin-washer-dryer-black.html) | LEGIT | £1,479.99 | £1,479.99 | — | live 2026-11-14 |
+| [Sonic Direct](https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210BBTN1-Washer-Dryer-in-Platinum-Black-1400-Spin-12kg10kg-A-Rated-WashTower-with-Dual-Inverter-Heat-Pump) | LEGIT | £1,999.00 | £1,499.00 | VPV5DS500 (verified) | live 2026-11-14 |
 | [Costco UK](https://www.costco.co.uk/p/464003) | LEGIT-WITH-CAVEATS | £1,499.98 | £1,499.98 | — | live 2026-11-14 |
-| [Appliance City](https://www.appliancecity.co.uk/laundry/washer-dryers/freestanding-washer-dryers/lg-wt1210bbtn1-12kg-10kg-washtower-washer-dryer-black-steel/) | LEGIT | £1,599.00 | £1,549.00 | SALE50 (likely) | live 2026-11-14 |
+| [Appliance City](https://www.appliancecity.co.uk/laundry/washer-dryers/freestanding-washer-dryers/lg-wt1210bbtn1-12kg-10kg-washtower-washer-dryer-black-steel/) | LEGIT | £1,599.00 | £1,549.00 | SALE50 (verified) | live 2026-11-14 |
 | [Mark's Electrical](https://markselectrical.co.uk/wt1210bbtn1_lg-washer-dryer) | LEGIT | £1,599.00 | £1,599.00 | — | live 2026-11-14 |
 | [Appliances Direct](https://www.appliancesdirect.co.uk/search?q=WT1210BBTN1) | LEGIT | £1,599.00 | £1,599.00 | — | snippet (live check failed) |
 | [Very](https://www.very.co.uk/search/WT1210BBTN1) | LEGIT | £1,599.00 | £1,599.00 | — | snippet (live check failed) |
@@ -82,7 +99,6 @@ Lifestyle Home Appliance Warehouse (AVOID, see above).
 | [Currys](https://www.currys.co.uk/search?q=WT1210BBTN1) | LEGIT | £1,699.00 | £1,699.00 | — | snippet (live check failed) |
 | [RDO](https://www.rdo.co.uk/products/l-g-free-standing-washer-dryer-wt1210bbtn1-platinum-black) | LEGIT | £1,699.00 | £1,699.00 | — | live 2026-11-14 |
 | [LG UK](https://www.lg.com/uk/laundry/washtowers/wt1210bbtn1/) | LEGIT | £1,999.00 | £1,899.05 | (member welcome) (likely) | live 2026-11-14 |
-| [Sonic Direct](https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210BBTN1-Washer-Dryer-in-Platinum-Black-1400-Spin-12kg10kg-A-Rated-WashTower-with-Dual-Inverter-Heat-Pump) | LEGIT | £1,999.00 | £1,999.00 | — | live 2026-11-14 |
 | [John Lewis](https://www.johnlewis.com/lg-wt1210bbtn1-wt1210wwf-washtower-freestanding-heat-pump-washer-dryer-12kg-10kg-load-1400rpm-spin/black/p112485759) | LEGIT | £1,999.00 | £1,999.00 | — | live 2026-11-14 (page text) |
 | [Genesis](https://www.genesishomeappliances.co.uk/lg-wt1210bbtn1-black-100102308.html) | LEGIT | £1,999.00 | £1,999.00 | — | snippet (live check failed) |
 
@@ -90,10 +106,10 @@ Lifestyle Home Appliance Warehouse (AVOID, see above).
 
 | Retailer | Trust | Listed + delivery | After codes/cashback | Applied | Price source |
 |---|---|---|---|---|---|
-| [Appliance City](https://www.appliancecity.co.uk/laundry/washer-dryers/freestanding-washer-dryers/lg-wt1210nbtn1-12kg-10kg-washtower-turbowash-washer-dryer-green-beige/) | LEGIT | £1,499.00 | £1,449.00 | SALE50 (likely) | live 2026-11-14 |
+| [Sonic Direct](https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210NBTN1-Washer-Dryer-in-Green--Beige-1400-Spin-12kg10kg-A-Rated-WashTower) | LEGIT | £1,699.00 | £1,199.00 | VPV5DS500 (verified) | snippet (live check failed) |
+| [Appliance City](https://www.appliancecity.co.uk/laundry/washer-dryers/freestanding-washer-dryers/lg-wt1210nbtn1-12kg-10kg-washtower-turbowash-washer-dryer-green-beige/) | LEGIT | £1,499.00 | £1,449.00 | SALE50 (verified) | live 2026-11-14 |
 | [LG UK](https://www.lg.com/uk/laundry/washtowers/wt1210nbtn1/) | LEGIT | £1,599.00 | £1,519.05 | (member welcome) (likely) | live 2026-11-14 |
 | [Currys Business](https://business.currys.co.uk/catalogue/domestic-appliances/laundry/washer-dryers-free-standing/lg-washtower-ai-direct-drive-wt1210nbtn1-wifi-enabled-12-kg-washer-dryer-green-beige/B598238B) | LEGIT | £1,698.96 | £1,698.96 | — | snippet (live check failed) |
 | [Carters Direct](https://www.cartersdirect.co.uk/lg-wt1210nbtn1.html) | LEGIT | £1,699.00 | £1,699.00 | — | live 2026-11-14 |
-| [Sonic Direct](https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210NBTN1-Washer-Dryer-in-Green--Beige-1400-Spin-12kg10kg-A-Rated-WashTower) | LEGIT | £1,699.00 | £1,699.00 | — | snippet (live check failed) |
 | [Stellisons](https://www.stellisonselectrical.co.uk/lg-wt1210nbtn1-abgqpuk-1000083760.html) | LEGIT | £1,699.00 | £1,699.00 | — | snippet (live check failed) |
 | [Currys](https://www.currys.co.uk/products/lg-washtower-ai-direct-drive-wt1210nbtn1-wifienabled-12-kg-washer-dryer-green-and-beige-10272687.html) | LEGIT | £1,798.97 | £1,798.97 | — | snippet (live check failed) |

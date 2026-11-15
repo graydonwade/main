@@ -6,6 +6,7 @@ Find the cheapest **new** price for a product across UK retailers, then stack th
 - Rejects eBay and marketplace resellers, outlet storefronts, and anything marked used, refurbished, graded, ex-display or open-box (`dealsearch/filters.py`).
 - Fetches with a real Chrome TLS fingerprint (curl_cffi) and falls back to a stealth browser (patchright). Set `DEALSEARCH_PROXY` to route through a UK residential IP. Currys, AO, Argos and Very hard-block data-centre IPs; see `docs/residential-ip.md`.
 - **Vets every retailer** (`dealsearch vet`). Automated checks cover domain age (RDAP), a company number, VAT number and UK address on the site, Companies House status (using `$CH_API_KEY`) and the Trustpilot rating. Researched verdicts are recorded in `retailers.yaml`. `report` drops `AVOID` retailers and flags prices more than 20% below the median of trusted retailers.
+- **Batch-tests coupons in real baskets** (`dealsearch coupons`). It harvests codes the shop or coupon sites publish, then applies each one through the shop's basket API: WooCommerce, Magento (REST or storefront forms) and Mark's Electrical. Other shops are driven in a browser using a site profile. Nothing is ordered.
 - Coupons carry a confidence level (`verified` / `likely` / `unverified`). The ranking uses one checkout code plus one cashback offer, and applies only `likely`+ codes unless you pass `--include-unverified`.
 
 ## Use
@@ -15,6 +16,7 @@ pip install -e '.[browser,dev]' && playwright install chromium
 dealsearch search WT1210WWF                       # retailer + comparison-site search URLs, to discover listings
 dealsearch vet --products projects/lg-washtower-2026-11/products.yaml   # legitimacy checks
 dealsearch check  projects/lg-washtower-2026-11/products.yaml   # fetch live prices into the file
+dealsearch coupons projects/lg-washtower-2026-11/products.yaml           # batch-test codes in real baskets
 dealsearch report projects/lg-washtower-2026-11/products.yaml \
        --coupons projects/lg-washtower-2026-11/coupons.yaml     # ranked markdown table
 ```

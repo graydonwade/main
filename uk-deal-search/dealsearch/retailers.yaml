@@ -1,0 +1,72 @@
+# UK retailers to search. `search` is a URL template ({q} = url-encoded query).
+# `browser: true` = needs Playwright (bot protection / client-side prices).
+# `selector` = CSS fallback if the page has no schema.org price.
+# `trust` notes are for humans; anything marked `suspect` is excluded by default.
+retailers:
+  - {name: AO, domain: ao.com, search: "https://ao.com/l/search/101/99/?search={q}", browser: true}
+  - {name: Currys, domain: currys.co.uk, search: "https://www.currys.co.uk/search?q={q}", browser: true}
+  - {name: Currys Business, domain: business.currys.co.uk, search: "https://business.currys.co.uk/catalogue/search?q={q}", browser: true, note: "Prices shown ex-VAT; business account"}
+  - {name: John Lewis, domain: johnlewis.com, search: "https://www.johnlewis.com/search?search-term={q}", browser: true}
+  - {name: Mark's Electrical, domain: markselectrical.co.uk, search: "https://markselectrical.co.uk/search?keyword={q}"}
+  - {name: Appliance City, domain: appliancecity.co.uk, search: "https://www.appliancecity.co.uk/shop/?s={q}"}
+  - {name: Paul Davies, domain: pauldavieskitchensandappliances.co.uk, search: "https://www.pauldavieskitchensandappliances.co.uk/catalogsearch/result/?q={q}"}
+  - {name: Harvey Norman UK, domain: harveynorman.co.uk, search: "https://www.harveynorman.co.uk/search?q={q}&type=product"}
+  - {name: Sonic Direct, domain: sonicdirect.co.uk, search: "https://www.sonicdirect.co.uk/search?q={q}"}
+  - {name: Donaghy Bros, domain: donaghybros.co.uk, search: "https://donaghybros.co.uk/catalogsearch/result/?q={q}"}
+  - {name: RDO, domain: rdo.co.uk, search: "https://www.rdo.co.uk/search?q={q}"}
+  - {name: Genesis, domain: genesishomeappliances.co.uk, search: "https://www.genesishomeappliances.co.uk/catalogsearch/result/?q={q}"}
+  - {name: Webbs, domain: webbs.tv, search: "https://www.webbs.tv/catalogsearch/result/?q={q}"}
+  - {name: Stellisons, domain: stellisonselectrical.co.uk, search: "https://www.stellisonselectrical.co.uk/catalogsearch/result/?q={q}"}
+  - {name: Hughes, domain: hughes.co.uk, search: "https://www.hughes.co.uk/search?q={q}"}
+  - {name: Euronics, domain: euronics.co.uk, search: "https://www.euronics.co.uk/search?q={q}"}
+  - {name: Appliances Direct, domain: appliancesdirect.co.uk, search: "https://www.appliancesdirect.co.uk/search?q={q}"}
+  - {name: Richer Sounds, domain: richersounds.com, search: "https://www.richersounds.com/catalogsearch/result/?q={q}"}
+  - {name: Costco UK, domain: costco.co.uk, search: "https://www.costco.co.uk/search?text={q}", browser: true, note: "Membership required"}
+  - {name: LG UK, domain: lg.com, search: "https://www.lg.com/uk/search/?search={q}", browser: true, note: "Check LG member price + promotions"}
+  - {name: Argos, domain: argos.co.uk, search: "https://www.argos.co.uk/search/{q}/", browser: true}
+  - {name: Very, domain: very.co.uk, search: "https://www.very.co.uk/search/{q}", browser: true}
+  - {name: Carters Direct, domain: cartersdirect.co.uk, search: "https://www.cartersdirect.co.uk/catalogsearch/result/?q={q}"}
+  - {name: DB Domestics, domain: dbdomestics.com, search: "https://www.dbdomestics.com/search?q={q}"}
+
+# Price comparison sites: used to DISCOVER retailers we don't list above.
+aggregators:
+  - {name: PriceSpy, search: "https://pricespy.co.uk/search?search={q}"}
+  - {name: PriceRunner, search: "https://www.pricerunner.com/results?q={q}"}
+  - {name: idealo, search: "https://www.idealo.co.uk/mscat.html?q={q}"}
+
+# Stores that look like clones/scams (implausible discounts, no company details,
+# copied product copy). Never treat their price as real.
+suspect_domains:
+  - tiedex.co.uk
+  - lifestylehomeappliancewarehouse.com
+
+# Researched legitimacy verdicts (LEGIT / LEGIT-WITH-CAVEATS / UNVERIFIED / AVOID).
+# Keyed by retailer name as used in products.yaml. `report` drops AVOID and labels the rest.
+# Sources: search snippets of Companies House, Endole, Trustpilot, euronics.co.uk (2026-11-14);
+# re-confirm the company number at find-and-update.company-information.service.gov.uk before paying.
+trust:
+  Mark's Electrical: {verdict: LEGIT, checked: 2026-11-14, evidence: "Marks Electrical Ltd 04463433 (AIM-listed group plc 13509635); est. 2002 Leicester; Trustpilot 4.8/~116k. FY26 profit down but £4.4m net cash"}
+  Appliance City: {verdict: LEGIT, checked: 2026-11-14, evidence: "Bunny Appliance Warehouse Ltd 03027841 (inc. 1995), Nottingham showroom; Trustpilot 4.5/~45k. NB unrelated 'Appliance City Ltd' 05839129 is in liquidation - different firm"}
+  Webbs: {verdict: LEGIT, checked: 2026-11-14, evidence: "Webbs of Cannock Ltd 08002533, trading since 1958, Euronics member; Trustpilot 4.8/~950"}
+  Costco UK: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "Costco Wholesale UK Ltd 02635489; membership required; Costco gives 2yr cover, extra LG years must be registered with LG within 90 days"}
+  Carters Direct: {verdict: LEGIT, checked: 2026-11-14, evidence: "Sussex family firm since 1987, ~7 showrooms, Euronics member; Trustpilot 4.9/~2.4k; company no. not confirmed"}
+  Sonic Direct: {verdict: LEGIT, checked: 2026-11-14, evidence: "Sonic Megastore Ltd 06805107 (inc. 2009), Bradford megastore, Euronics member; Trustpilot 4.9/~37k"}
+  Donaghy Bros: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "NI030598 (inc. 1996, trading since 1964), N. Ireland; Trustpilot 4.5/~15.5k. Its content is mirrored on donaghybros.duckdns.org - buy only at donaghybros.co.uk; confirm UK (not ROI) stock"}
+  DB Domestics: {verdict: LEGIT, checked: 2026-11-14, evidence: "D.B. Domestic Appliances Ltd 04889218, Polegate; Trustpilot 4.9/~4.3k"}
+  RDO: {verdict: LEGIT, checked: 2026-11-14, evidence: "RDO Holdings Ltd 12527060, Reigate showroom, Euronics member; Trustpilot ~4.9/9k+"}
+  Genesis: {verdict: LEGIT, checked: 2026-11-14, evidence: "Genesis Home Appliances Ltd 04698405 (inc. 2003), Workington; small - Trustpilot 4.5/64, reviews.co.uk 4.8/~270"}
+  Paul Davies: {verdict: LEGIT, checked: 2026-11-14, evidence: "P & S Domestics Ltd, Bolton, Euronics member; Trustpilot 4.8/~1.6-2k"}
+  Stellisons: {verdict: LEGIT, checked: 2026-11-14, evidence: "Stellison Ltd 00743883 (inc. 1962), Essex/Kent/Suffolk stores, Euronics member; Trustpilot ~4.5-4.8/~2k"}
+  Harvey Norman UK: {verdict: LEGIT, checked: 2026-11-14, evidence: "Harvey Norman Trading (UK) Ltd 15512318 (inc. 2024) - genuine Harvey Norman group, 4 UK stores"}
+  Euronics: {verdict: LEGIT, checked: 2026-11-14, evidence: "Euronics Ltd 03029834 buying group; contract is with the member store"}
+  Appliances Direct: {verdict: LEGIT, checked: 2026-11-14, evidence: "Buy It Direct Ltd 04171412 (inc. 2001); Trustpilot 4.4/~130k. Also sells graded stock - check listing is new"}
+  Currys: {verdict: LEGIT, checked: 2026-11-14, evidence: "major UK chain"}
+  Currys Business: {verdict: LEGIT, checked: 2026-11-14, evidence: "Currys business arm"}
+  John Lewis: {verdict: LEGIT, checked: 2026-11-14, evidence: "major UK chain"}
+  AO: {verdict: LEGIT, checked: 2026-11-14, evidence: "major UK chain"}
+  Very: {verdict: LEGIT, checked: 2026-11-14, evidence: "major UK chain"}
+  Hughes: {verdict: LEGIT, checked: 2026-11-14, evidence: "established UK chain"}
+  Yellow Electronics: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "real business (Trustpilot 4.8/826) but sells returns/surplus/box-damaged stock - a £999 WashTower is almost certainly not new"}
+  TieDex: {verdict: LEGIT-WITH-CAVEATS, checked: 2026-11-14, evidence: "Tiedex Ltd 09350193 general reseller, not LG-authorised; Trustpilot 3.6-4/~260 with import-charge and stock complaints"}
+  Lifestyle Home Appliance Warehouse: {verdict: AVOID, checked: 2026-11-14, evidence: "domain registered 2026-07-10 (RDAP); no company found; prices shown in £ and € with 'Typical UK price' wording; Cloudflare-shielded; product titles copied from Currys; Trustpilot 2.5/5 with non-delivery/scam reports; matches known clone-store pattern"}
+  LG UK: {verdict: LEGIT, checked: 2026-11-14, evidence: "manufacturer's own store"}

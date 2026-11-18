@@ -1,0 +1,240 @@
+"""dealsearch CLI.
+
+  dealsearch check  projects/<p>/products.yaml          # scrape every known product URL
+  dealsearch report projects/<p>/products.yaml --coupons projects/<p>/coupons.yaml
+  dealsearch search WT1210WWF                          # print retailer search URLs to discover listings
+
+`check` writes observed prices back into the products file (observed: block) so
+`report` can rank them with the best coupon/cashback stack applied.
+"""
+from __future__ import annotations
+
+import argparse
+import datetime as dt
+import logging
+import sys
+from decimal import Decimal
+from importlib import resources
+from urllib.parse import quote_plus
+
+import yaml
+
+from . import coupons as cp
+from .extract import extract_offers
+from .fetch import FetchError, fetch
+from .filters import domain, rejection_reason
+from .vet import vet
+
+
+def _retailers() -> dict:
+    return yaml.safe_load(resources.files("dealsearch").joinpath("retailers.yaml").read_text())
+
+
+def cmd_search(args) -> int:
+    cfg = _retailers()
+    for r in cfg["retailers"] + cfg["aggregators"]:
+        print(f"{r['name']:<20} {r['search'].format(q=quote_plus(args.query))}")
+    return 0
+
+
+def _page_title(html: str) -> str:
+    from bs4 import BeautifulSoup
+    soup = BeautifulSoup(html, "lxml")
+    h1 = soup.find("h1")
+    return f"{soup.title.get_text() if soup.title else ''} {h1.get_text() if h1 else ''}"
+
+
+def cmd_check(args) -> int:
+    cfg = _retailers()
+    suspect = set(cfg.get("suspect_domains", []))
+    browser_domains = {r["domain"] for r in cfg["retailers"] if r.get("browser")}
+    with open(args.products) as f:
+        data = yaml.safe_load(f)
+    today = dt.date.today().isoformat()
+    for prod in data["products"]:
+        for lst in prod.get("listings", []):
+            url = lst["url"]
+            if lst.get("exclude"):
+                continue
+            why = rejection_reason(url, lst.get("title", ""), extra_blocked=suspect)
+            if why:
+                lst["observed"] = {"date": today, "rejected": why}
+                print(f"SKIP {prod['model']} {domain(url)}: {why}")
+                continue
+            mode = "always" if domain(url) in browser_domains else args.browser
+            try:
+                html = fetch(url, use_browser=mode)
+                offers = extract_offers(html, lst.get("selector"))
+            except FetchError as e:
+                lst["observed"] = {"date": today, "error": str(e)[:200]}
+                print(f"FAIL {prod['model']} {domain(url)}: {e}")
+                continue
+            new = [o for o in offers if not rejection_reason(url, o.name or "", o.condition)]
+            # Make sure the price belongs to THIS model (search pages list many products).
+            model = prod["model"].upper()
+            named = [o for o in new if model in f"{o.name} {o.sku} {o.mpn}".upper()]
+            if named:
+                new = named
+            elif model not in _page_title(html).upper() or len(new) > 1:
+                new = []
+            if not new:
+                lst["observed"] = {"date": today, "error": "no new-condition price found"}
+                print(f"NONE {prod['model']} {domain(url)}")
+                continue
+            o = min(new, key=lambda o: o.price)
+            lst["observed"] = {"date": today, "price": float(round(o.price, 2)),
+                               "availability": o.availability, "via": o.source}
+            print(f"OK   {prod['model']} {domain(url)}: £{o.price:,.2f} {o.availability or ''}")
+    with open(args.products, "w") as f:
+        yaml.safe_dump(data, f, sort_keys=False, allow_unicode=True)
+    return 0
+
+
+def _trust_map() -> dict[str, dict]:
+    """retailer name -> {verdict, evidence, checked} from retailers.yaml."""
+    cfg = _retailers()
+    out = dict(cfg.get("trust") or {})
+    for d in cfg.get("suspect_domains", []):
+        out.setdefault(d, {"verdict": "AVOID", "evidence": "listed in suspect_domains"})
+    return out
+
+
+def cmd_vet(args) -> int:
+    targets = list(args.domains)
+    if args.products:
+        with open(args.products) as f:
+            for prod in yaml.safe_load(f)["products"]:
+                targets += [domain(l["url"]) for l in prod.get("listings", []) if not l.get("exclude")]
+    cfg = _retailers()
+    by_name = cfg.get("trust") or {}
+    known = {r["domain"]: by_name.get(r["name"]) for r in cfg["retailers"]}
+    for d in dict.fromkeys(targets):
+        v = vet(d)
+        manual = known.get(d)
+        print(f"\n{d}: automated={v.verdict}" + (f"  researched={manual['verdict']}" if manual else ""))
+        print(f"  domain registered {v.domain_registered or '?'} | company no {v.company_number or '-'} | "
+              f"VAT {v.vat_number or '-'} | UK address {'yes' if v.has_uk_address else 'no'}")
+        if v.ch_status:
+            print(f"  Companies House: {v.ch_status}, incorporated {v.ch_incorporated}")
+        if v.trustpilot_score is not None:
+            print(f"  Trustpilot {v.trustpilot_score} ({v.trustpilot_reviews} reviews)")
+        for f in v.red_flags:
+            print(f"  RED FLAG: {f}")
+        for e in v.errors:
+            print(f"  (check failed: {e})")
+    return 0
+
+
+def _price(lst: dict) -> Decimal | None:
+    obs = lst.get("observed") or {}
+    p = obs.get("price", lst.get("price"))
+    return Decimal(str(p)) if p is not None else None
+
+
+def cmd_report(args) -> int:
+    with open(args.products) as f:
+        data = yaml.safe_load(f)
+    coupons = cp.load(args.coupons) if args.coupons else []
+    trust = _trust_map()
+    for prod in data["products"]:
+        rows = []
+        for lst in prod.get("listings", []):
+            if lst.get("exclude"):
+                continue
+            t = trust.get(lst["retailer"]) or trust.get(domain(lst["url"])) or {"verdict": "UNVERIFIED"}
+            lst["_trust"] = t["verdict"]
+            if t["verdict"] == "AVOID" and not args.include_avoid:
+                print(f"<!-- excluded {lst['retailer']}: AVOID - {t.get('evidence', '')} -->")
+                continue
+            price = _price(lst)
+            if price is None:
+                continue
+            total = price + Decimal(str(lst.get("delivery", 0) or 0))
+            eff, used = cp.best_stack(lst["retailer"], total, coupons, args.include_unverified)
+            rows.append((eff, total, lst, used))
+        rows.sort(key=lambda r: r[0])
+        trusted = sorted(r[1] for r in rows if r[2]["_trust"].startswith("LEGIT"))
+        median = trusted[len(trusted) // 2] if trusted else None
+        print(f"\n## {prod['model']} — {prod.get('name', '')}\n")
+        print("| Retailer | Trust | Listed + delivery | After codes/cashback | Applied | Price source |")
+        print("|---|---|---|---|---|---|")
+        for eff, total, lst, used in rows:
+            applied = "; ".join(f"{c.code or c.kind} ({c.status})" for c in used) or "—"
+            obs = lst.get("observed") or {}
+            src = (f"live {obs['date']}" if "price" in obs
+                   else lst.get("price_source", "manual") + (" (live check failed)" if obs else ""))
+            tv = lst["_trust"]
+            if median and total < median * Decimal("0.8"):
+                tv += " ⚠️ >20% below median"
+            print(f"| [{lst['retailer']}]({lst['url']}) | {tv} | £{total:,.2f} | £{eff:,.2f} | {applied} | {src} |")
+    return 0
+
+
+def cmd_coupons(args) -> int:
+    from .coupontest import detect_platform, test_codes
+    from .harvest import harvest
+    with open(args.products) as f:
+        data = yaml.safe_load(f)
+    found_any = []
+    for prod in data["products"]:
+        if args.model and prod["model"] not in args.model:
+            continue
+        for lst in prod.get("listings", []):
+            if lst.get("exclude") or (args.retailer and lst["retailer"] not in args.retailer):
+                continue
+            url = lst["url"]
+            plat = lst.get("platform") or detect_platform(url)
+            if not plat:
+                print(f"\n{prod['model']} @ {lst['retailer']}: no basket adapter (custom checkout) - skipped")
+                continue
+            print(f"\n{prod['model']} @ {lst['retailer']}")
+            cands = harvest(domain(url), [url] + lst.get("promo_urls", []), seasonal=not args.no_seasonal)
+            for c in args.code or []:
+                cands.setdefault(c.upper(), "command line")
+            cands = {c: v for c, v in cands.items() if c != prod["model"] and c != lst.get("sku")}
+            try:
+                base, results = test_codes(url, list(cands), plat, lst.get("sku"))
+            except Exception as e:  # noqa: BLE001
+                print(f"  basket setup failed: {e}")
+                continue
+            for r in results:
+                if r.ok and r.discount > 0:
+                    found_any.append((prod["model"], lst["retailer"], r, base, cands[r.code]))
+    print("\n## Working codes\n")
+    if not found_any:
+        print("none found")
+    for model, retailer, r, base, src in sorted(found_any, key=lambda x: (x[0], x[2].total)):
+        print(f"- {model} @ {retailer}: **{r.code}** -£{r.discount:,.2f} → £{r.total:,.2f} "
+              f"(from £{base:,.2f}; source: {src})")
+    return 0
+
+
+def main(argv: list[str] | None = None) -> int:
+    ap = argparse.ArgumentParser(prog="dealsearch")
+    ap.add_argument("-v", "--verbose", action="store_true")
+    sub = ap.add_subparsers(dest="cmd", required=True)
+    s = sub.add_parser("search"); s.add_argument("query"); s.set_defaults(fn=cmd_search)
+    c = sub.add_parser("check"); c.add_argument("products")
+    c.add_argument("--browser", choices=["never", "auto", "always"], default="auto")
+    c.set_defaults(fn=cmd_check)
+    r = sub.add_parser("report"); r.add_argument("products"); r.add_argument("--coupons")
+    r.add_argument("--include-unverified", action="store_true",
+                   help="also apply aggregator codes nobody has confirmed")
+    r.add_argument("--include-avoid", action="store_true", help="show retailers vetted as AVOID")
+    cc = sub.add_parser("coupons", help="harvest published codes and test them in a real basket")
+    cc.add_argument("products"); cc.add_argument("--model", action="append")
+    cc.add_argument("--retailer", action="append"); cc.add_argument("--code", action="append",
+                                                                    help="extra code to try")
+    cc.add_argument("--no-seasonal", action="store_true")
+    cc.set_defaults(fn=cmd_coupons)
+    v = sub.add_parser("vet", help="legitimacy checks for retailer domains")
+    v.add_argument("domains", nargs="*"); v.add_argument("--products")
+    v.set_defaults(fn=cmd_vet)
+    r.set_defaults(fn=cmd_report)
+    args = ap.parse_args(argv)
+    logging.basicConfig(level=logging.INFO if args.verbose else logging.WARNING)
+    return args.fn(args)
+
+
+if __name__ == "__main__":
+    sys.exit(main())

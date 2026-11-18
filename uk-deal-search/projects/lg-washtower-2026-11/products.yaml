@@ -1,0 +1,346 @@
+products:
+- model: WT1210WWF
+  name: LG WashTower 12kg/10kg washer dryer, white
+  listings:
+  - retailer: Mark's Electrical
+    url: https://markselectrical.co.uk/wt1210wwf_lg-washer-dryer
+    price: 1299
+    delivery: 0
+    price_source: snippet
+    note: BF listing £1,299 (£1,244 Marks+ members, £19.99/yr); older product-page
+      snippet £1,599 - conflicting
+    observed:
+      date: '2026-11-14'
+      price: 1299.0
+      availability: null
+      via: meta
+  - retailer: Appliance City
+    url: https://www.appliancecity.co.uk/laundry/lg-wt1210wwf-12kg-10kg-washtower-turbowash-washer-dryer-white/
+    price: 1399
+    delivery: 0
+    price_source: snippet
+    note: BF price; free 5yr warranty on registration
+    observed:
+      date: '2026-11-14'
+      price: 1399.0
+      availability: InStock
+      via: json-ld
+  - retailer: John Lewis
+    url: https://www.johnlewis.com/lg-wt1210bbtn1-wt1210wwf-washtower-freestanding-heat-pump-washer-dryer-12kg-10kg-load-1400rpm-spin/white/p112485759
+    price: 1499
+    delivery: 0
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      error: no new-condition price found
+  - retailer: DB Domestics
+    url: https://www.dbdomestics.com/search?q=WT1210WWF
+    price: 1499
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      error: no new-condition price found
+  - retailer: Sonic Direct
+    url: https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210WWF-Washer-Dryer-in-White-1400-Spin-12kg10kg-A-Rated-WashTower-with-Dual-Inverter-Heat-Pump
+    price: 1499
+    price_source: snippet
+    note: price-beat promise
+    observed:
+      date: '2026-11-14'
+      price: 1299.0
+      availability: null
+      via: meta
+  - retailer: Harvey Norman UK
+    url: https://www.harveynorman.co.uk/products/lg-washtower-12kg-washer-10kg-dryer-freestanding-washer-dryer-wt1210wwf-white
+    price: 1299
+    price_source: user screenshot 2026-11-15
+    note: Black Friday, was £1,809; delivery cost not seen
+  - retailer: Currys
+    url: https://www.currys.co.uk/products/lg-washtower-wt1210wwf-wifienabled-12-kg-washer-dryer-white-10301982.html
+    price: 1599
+    price_source: snippet
+    note: 25% off when bought with another large appliance
+    observed:
+      date: '2026-11-14'
+      error: 'browser: HTTP 403'
+  - retailer: Euronics
+    url: https://www.euronics.co.uk/catalogue/laundry/washing-machines/freestanding-washing-machines/front-loading-washing-machines/lg-wt1210wwf-12kg-wash-10kg-dry-1400rpm-washer-dryer-tower-white/p/LGEWT1210WWF
+    price: 1599
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      price: 1599.0
+      availability: InStock
+      via: json-ld
+  - retailer: Webbs
+    url: https://www.webbs.tv/catalogsearch/result/?q=WT1210WWF
+    price: 1599
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      error: 'browser: HTTP 403'
+  - retailer: RDO
+    url: https://www.rdo.co.uk/products/l-g-free-standing-washer-dryer-wt1210wwf-white
+    price: 1899
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      price: 1599.0
+      availability: InStock
+      via: json-ld
+  - retailer: Paul Davies
+    url: https://www.pauldavieskitchensandappliances.co.uk/lg-wt1210wwf-12kg-10kg-1400-spin-washer-dryer-white.html
+    price: 1899
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      price: 1299.99
+      availability: null
+      via: meta
+  - retailer: Fortuna Jersey
+    url: https://fortunajersey.com/lg-wt1210wwf-12kg-10kg-1400-spin-wash-tower-white/
+    exclude: Jersey only
+  - retailer: LG UK
+    url: https://www.lg.com/uk/laundry/washtowers/wt1210wwf/
+    price: 1599
+    delivery: 0
+    price_source: live 2026-11-14
+    note: OUT OF STOCK on lg.com; free installation with WashTowers
+    observed:
+      date: '2026-11-14'
+      price: 1599.0
+      availability: OutOfStock
+      via: json-ld
+- model: WT1210BBTN1
+  name: LG WashTower 12kg/10kg washer dryer, platinum black
+  listings:
+  - retailer: Costco UK
+    url: https://www.costco.co.uk/p/464003
+    price: 1449.99
+    delivery: 0
+    price_source: snippet
+    note: membership required; page shows 'out of stock' text - check stock at your
+      warehouse
+    observed:
+      date: '2026-11-14'
+      price: 1499.98
+      availability: null
+      via: meta
+  - retailer: Webbs
+    url: https://www.webbs.tv/lg-washtower-wt1210bbtn1-heat-pump-12-10kg-washer-dryer-platinum-black.html
+    price: 1459
+    delivery: 0
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      price: 1459.0
+      availability: null
+      via: meta
+  - retailer: Sonic Direct
+    url: https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210BBTN1-Washer-Dryer-in-Platinum-Black-1400-Spin-12kg10kg-A-Rated-WashTower-with-Dual-Inverter-Heat-Pump
+    price: 1999
+    price_source: snippet
+    note: BF '£500 voucher' would make ~£1,499 - unclear
+    observed:
+      date: '2026-11-14'
+      price: 1999.0
+      availability: null
+      via: meta
+  - retailer: Appliance City
+    url: https://www.appliancecity.co.uk/laundry/washer-dryers/freestanding-washer-dryers/lg-wt1210bbtn1-12kg-10kg-washtower-washer-dryer-black-steel/
+    price: 1599
+    delivery: 0
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      price: 1599.0
+      availability: InStock
+      via: json-ld
+  - retailer: Mark's Electrical
+    url: https://markselectrical.co.uk/wt1210bbtn1_lg-washer-dryer
+    price: 1599
+    delivery: 0
+    price_source: snippet
+    note: £1,544 Marks+; snippet ~6 months old
+    observed:
+      date: '2026-11-14'
+      price: 1599.0
+      availability: null
+      via: meta
+  - retailer: Appliances Direct
+    url: https://www.appliancesdirect.co.uk/search?q=WT1210BBTN1
+    price: 1599
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      error: no new-condition price found
+  - retailer: Donaghy Bros
+    url: https://donaghybros.co.uk/lg-washtower-wt1210bbtn1-12kg-10kg-1400rpm-washer-dryer-black.html
+    price: 1599
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      price: 1459.0
+      availability: InStock
+      via: json-ld
+  - retailer: John Lewis
+    url: https://www.johnlewis.com/lg-wt1210bbtn1-wt1210wwf-washtower-freestanding-heat-pump-washer-dryer-12kg-10kg-load-1400rpm-spin/black/p112485759
+    price: 1999
+    delivery: 0
+    price_source: live 2026-11-14 (page text)
+    note: snippets conflict £1,599-£1,999
+  - retailer: Very
+    url: https://www.very.co.uk/search/WT1210BBTN1
+    price: 1599
+    price_source: snippet
+    note: delivery charge likely
+    observed:
+      date: '2026-11-14'
+      error: 'browser: HTTP 403'
+  - retailer: Euronics
+    url: https://www.euronics.co.uk/catalogue/laundry/washer-dryers/freestanding-washer-dryers/lg-wt1210bbtn1-12kg10kg-1400-spin-washer-dryer-platinum-black/p/LGEWT1210BBTN1
+    price: 1599.99
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      price: 1599.99
+      availability: InStock
+      via: json-ld
+  - retailer: Currys
+    url: https://www.currys.co.uk/search?q=WT1210BBTN1
+    price: 1699
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      error: 'browser: HTTP 403'
+  - retailer: RDO
+    url: https://www.rdo.co.uk/products/l-g-free-standing-washer-dryer-wt1210bbtn1-platinum-black
+    price: 1999
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      price: 1699.0
+      availability: InStock
+      via: json-ld
+  - retailer: Genesis
+    url: https://www.genesishomeappliances.co.uk/lg-wt1210bbtn1-black-100102308.html
+    price: 1999
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      error: no new-condition price found
+  - retailer: AW Outlet
+    url: https://awoutlet.co.uk/lg-wt1210bbtn1-black-3654.html
+    exclude: graded stock
+  - retailer: John Lewis Outlet
+    url: https://www.johnlewis.com/-/p114463828
+    exclude: outlet / like-new
+  - retailer: TieDex
+    url: https://tiedex.co.uk/products/tiedex-uk-lg-washtower-wt1210bbtn1-wifi-enabled-12-kg-washer-dryer-black
+    exclude: reseller with poor reviews, dearer anyway
+  - retailer: Paul Davies
+    url: https://www.pauldavieskitchensandappliances.co.uk/lg-wt1210bbtn1-12kg-10kg-1400-spin-washer-dryer-black.html
+    price: 1479.99
+    price_source: live 2026-11-14
+    observed:
+      date: '2026-11-14'
+      price: 1479.99
+      availability: null
+      via: meta
+  - retailer: LG UK
+    url: https://www.lg.com/uk/laundry/washtowers/wt1210bbtn1/
+    price: 1999
+    delivery: 0
+    price_source: live 2026-11-14
+    observed:
+      date: '2026-11-14'
+      price: 1999.0
+      availability: InStock
+      via: json-ld
+- model: WT1210NBTN1
+  name: LG WashTower 12kg/10kg washer dryer, green & beige
+  listings:
+  - retailer: Harvey Norman UK
+    url: https://www.harveynorman.co.uk/products/lg-washtower-12kg-washer-10kg-dryer-freestanding-washer-dryer-wt1210nbtn1-green-beige
+    price: 1199
+    price_source: user screenshot 2026-11-15
+    note: Black Friday, was £1,499; delivery cost not seen
+  - retailer: Costco UK
+    url: https://www.costco.co.uk/c/LG-WT1210NBTN1-12kg10kg-1400rpm-WashTower-Rated-in-AA-in-Green-Beige/p/667714
+    price: 1299.99
+    delivery: 0
+    price_source: snippet
+    note: membership required
+    observed:
+      date: '2026-11-14'
+      error: no new-condition price found
+    exclude: product page no longer loads (delisted?) as of 2026-11-14 live check
+  - retailer: Carters Direct
+    url: https://www.cartersdirect.co.uk/lg-wt1210nbtn1.html
+    price: 1489.99
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      price: 1699.0
+      availability: null
+      via: meta
+  - retailer: Appliance City
+    url: https://www.appliancecity.co.uk/laundry/washer-dryers/freestanding-washer-dryers/lg-wt1210nbtn1-12kg-10kg-washtower-turbowash-washer-dryer-green-beige/
+    price: 1499
+    delivery: 0
+    price_source: snippet
+    note: BF page; free 5yr warranty on registration
+    observed:
+      date: '2026-11-14'
+      price: 1499.0
+      availability: InStock
+      via: json-ld
+  - retailer: Sonic Direct
+    url: https://www.sonicdirect.co.uk/prod/Washer-Dryers/LG-WT1210NBTN1-Washer-Dryer-in-Green--Beige-1400-Spin-12kg10kg-A-Rated-WashTower
+    price: 1699
+    price_source: snippet
+    observed:
+      date: '2026-11-14'
+      error: 'browser: HTTP 404'
+  - retailer: Stellisons
+    url: https://www.stellisonselectrical.co.uk/lg-wt1210nbtn1-abgqpuk-1000083760.html
+    price: 1699
+    price_source: snippet
+    note: awaiting stock
+    observed:
+      date: '2026-11-14'
+      error: no new-condition price found
+  - retailer: Currys Business
+    url: https://business.currys.co.uk/catalogue/domestic-appliances/laundry/washer-dryers-free-standing/lg-washtower-ai-direct-drive-wt1210nbtn1-wifi-enabled-12-kg-washer-dryer-green-beige/B598238B
+    price: 1698.96
+    price_source: snippet
+    note: £1,415.80 ex VAT
+    observed:
+      date: '2026-11-14'
+      error: 'browser: HTTP 403'
+  - retailer: Currys
+    url: https://www.currys.co.uk/products/lg-washtower-ai-direct-drive-wt1210nbtn1-wifienabled-12-kg-washer-dryer-green-and-beige-10272687.html
+    price: 1798.97
+    price_source: snippet
+    note: was £1,499 Dec 2025 - may drop again
+    observed:
+      date: '2026-11-14'
+      error: 'browser: HTTP 403'
+  - retailer: Yellow Electronics
+    url: https://yellowelectronics.co.uk
+    exclude: £999 out of stock - seller deals in returns/box-damaged stock, so almost
+      certainly not new
+  - retailer: Lifestyle Home Appliance Warehouse
+    url: https://lifestylehomeappliancewarehouse.com/product/lg-washtower-wt1210bbtn1-wifi-enabled-12-kg-washer-dryer-black/
+    exclude: AVOID - clone-store red flags
+  - retailer: LG UK
+    url: https://www.lg.com/uk/laundry/washtowers/wt1210nbtn1/
+    price: 1599
+    delivery: 0
+    price_source: live 2026-11-14
+    note: 5% member + 10% referral (if it stacks) = ~£1,367; free installation
+    observed:
+      date: '2026-11-14'
+      price: 1599.0
+      availability: InStock
+      via: json-ld

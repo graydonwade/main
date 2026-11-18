@@ -1,0 +1,17 @@
+# status: likely = official promo / recent HUKD confirmation; unverified = aggregator only.
+# Nothing here has been tested at a checkout. `retailer` must match products.yaml.
+coupons:
+  - {retailer: Mark's Electrical, code: MEMULTIBUY, kind: percent, value: 10, status: verified, applies_to: "2+ eligible items, each >= £249, same order (WashTowers are eligible)", source: "https://markselectrical.co.uk/voucher-terms", note: "basket-tested 2026-11-15: 2x WT1210WWF £2,598 -> £2,338.20 (-£259.80). Single item = no discount, so the report doesn't auto-apply it"}
+  - {retailer: Sonic Direct, code: VPV5DS500, kind: fixed, value: 500, status: verified, applies_to: "WT1210BBTN1 only", source: "https://www.sonicdirect.co.uk/cat/VOUCHER-CODE-DISCOUNTS", note: "applied in a real basket 2026-11-15: £1,999 -> £1,499"}
+  - {retailer: Appliance City, code: SALE50, kind: fixed, value: 50, status: verified, source: "https://www.appliancecity.co.uk/brand/lg/black-friday/", note: "applied in a real basket 2026-11-15 on all three WashTowers (WooCommerce Store API)"}
+  - {retailer: Hughes, code: XMAS20, kind: fixed, value: 20, status: unverified, applies_to: "selected Samsung & LG laundry", source: "https://www.hughes.co.uk/promotions/extra-20-off-selected-samsung-and-lg-washing-machines/"}
+  - {retailer: Mark's Electrical, code: null, kind: fixed, value: 55, status: unverified, note: "Marks+ membership price (-£55) costs £19.99/yr; net ~£35"}
+  - {retailer: Mark's Electrical, code: "(10% appliance code)", kind: percent, value: 10, min_spend: 249, status: unverified, note: "basket test 2026-11-15: BLACKFRIDAY10, BF10, WELCOME10, SAVE10, SAVE5, EXTRA10, XMAS10, BLUELIGHT, LG10 all EXPIRED", source: "https://www.latestdeals.co.uk/retailers/markselectrical.co.uk"}
+  - {retailer: AO, code: "(Blue Light Card)", kind: fixed, value: 15, min_spend: 299, status: unverified, note: "BLC members only"}
+  - {retailer: Currys, code: "(Blue Light Card)", kind: fixed, value: 25, status: unverified, note: "BLC members only"}
+  - {retailer: Currys, code: "(5% large kitchen >£399)", kind: percent, value: 5, min_spend: 399, status: unverified, note: "last verified Jun 2026"}
+  - {retailer: Costco UK, code: null, kind: cashback_percent, value: 2, status: unverified, note: "Executive membership reward only"}
+  - {retailer: LG UK, code: "(member welcome)", kind: percent, value: 5, status: likely, note: "free LG membership, first order"}
+  - {retailer: LG UK, code: "(refer-a-friend)", kind: percent, value: 10, status: unverified, note: "HUKD: stacks with membership; needs all LG cookies accepted"}
+  - {retailer: LG UK, code: "(Health Service Discounts / EPP)", kind: percent, value: 20, status: unverified, note: "eligible employees only; stacks w/ 2% member"}
+  - {retailer: LG UK, code: null, kind: cashback_percent, value: 10, status: unverified, note: "TopCashback 8 Nov 2026 newsletter: 10% on LG appliances; may void if non-affiliate code used", source: "https://www.topcashback.co.uk/newsletter/view/15415/1"}
